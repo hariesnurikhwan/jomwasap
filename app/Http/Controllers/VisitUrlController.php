@@ -12,7 +12,7 @@ class VisitUrlController extends Controller
 
         $text = rawurlencode($url->text);
 
-        $redirectWhatsApp = 'whatsapp://send?text=' . $text . '&phone=' . $url->mobile_number;
+        $redirectWhatsApp = "whatsapp://send?text={$text}&phone={$url->mobile_number}";
 
         return redirect($redirectWhatsApp);
     }
