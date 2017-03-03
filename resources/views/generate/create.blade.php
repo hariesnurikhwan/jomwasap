@@ -28,7 +28,7 @@
 
 						<div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
 						    {!! Form::label('text', 'Pretext Chat') !!}
-						    {!! Form::textarea('text', null, ['class' => 'form-control', 'required' => 'required']) !!}
+						    {!! Form::textarea('text', null, ['class' => 'form-control']) !!}
 						    <small class="text-danger">{{ $errors->first('text') }}</small>
 						</div>
 
