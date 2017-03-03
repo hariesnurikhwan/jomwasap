@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ShortenedUrl;
+use libphonenumber\PhoneNumberFormat;
 
 class VisitUrlController extends Controller
 {
@@ -12,7 +13,9 @@ class VisitUrlController extends Controller
 
         $text = rawurlencode($url->text);
 
-        $redirectWhatsApp = "whatsapp://send?text={$text}&phone={$url->mobile_number}";
+        $mobileNumber = phone($url->mobile_number, 'MY', PhoneNumberFormat::E164);
+
+        $redirectWhatsApp = "whatsapp://send?text={$text}&phone={$mobileNumber}";
 
         return redirect($redirectWhatsApp);
     }
