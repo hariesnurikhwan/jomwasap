@@ -53,8 +53,10 @@ class GenerateUrlController extends Controller
 
         $user = auth()->user();
 
+        $alias = $request->has('alias') ? $request->alias : str_random(15);
+
         $url = $user->url()->create([
-            'alias' => $request->alias,
+            'alias' => $alias,
             'mobile_number' => $request->mobile_number,
             'text' => $request->text,
         ]);
@@ -99,7 +101,7 @@ class GenerateUrlController extends Controller
     {
         $this->validate($request, [
             'alias' => [
-                'sometimes',
+                'required',
                 Rule::unique('shortened_urls')->ignore($url->id),
             ],
             'mobile_number' => 'required|phone:MY',
