@@ -60,7 +60,7 @@ class GenerateUrlController extends Controller
             'text' => 'sometimes|max:500',
         ]);
 
-        $url = Auth::addURL(new ShortenedUrl(
+        $url = Auth::user()->addURL(new ShortenedUrl(
             $request->only(['alias', 'mobile_number', 'text'])
         ));
 
