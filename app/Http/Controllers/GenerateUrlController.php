@@ -55,7 +55,7 @@ class GenerateUrlController extends Controller
 
         $url = $user->url()->create([
             'alias' => $request->alias,
-            'mobile_number' => $request->mobile_number,
+            'mobile_number' => phone($request->mobile_number, 'MY', PhoneNumberFormat::E164),
             'text' => $request->text,
         ]);
 
@@ -108,7 +108,7 @@ class GenerateUrlController extends Controller
 
         $url = ShortenedUrl::create([
             'alias' => $request->alias,
-            'mobile_number' => $request->mobile_number,
+            'mobile_number' => phone($request->mobile_number, 'MY', PhoneNumberFormat::E164),
             'text' => $request->text,
         ]);
 
