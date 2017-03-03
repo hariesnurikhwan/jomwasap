@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\ShortenedUrl;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class GenerateUrlController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('URLMustBelongToOwner')->only([
+            'show',
+            'edit',
+            'update',
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,9 +25,8 @@ class GenerateUrlController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-
-        $urls = $user->url()->paginate(20);
+        $urls = ShortenedUrl::where('user_id', Auth::id())
+            ->paginate(20);
 
         return view('generate.index', [
             'urls' => $urls,
@@ -43,25 +52,19 @@ class GenerateUrlController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'alias' => [
+            'alias'         => [
                 'sometimes',
                 Rule::unique('shortened_urls'),
             ],
             'mobile_number' => 'required|phone:MY',
-            'text' => 'sometimes|max:500',
+            'text'          => 'sometimes|max:500',
         ]);
 
-        $user = auth()->user();
+        $url = auth()->user()->addURL(new ShortenedUrl(
+            $request->only(['alias', 'mobile_number', 'text'])
+        ));
 
-        $alias = $request->has('alias') ? $request->alias : str_random(15);
-
-        $url = $user->url()->create([
-            'alias' => $alias,
-            'mobile_number' => $request->mobile_number,
-            'text' => $request->text,
-        ]);
-
-        return redirect()->route('generate.show', $url->id);
+        return redirect()->route('generate.show', $url->hashid);
     }
 
     /**
@@ -100,20 +103,16 @@ class GenerateUrlController extends Controller
     public function update(Request $request, ShortenedUrl $url)
     {
         $this->validate($request, [
-            'alias' => [
+            'alias'         => [
                 'required',
                 Rule::unique('shortened_urls')->ignore($url->id),
             ],
             'mobile_number' => 'required|phone:MY',
-            'text' => 'sometimes|max:500',
+            'text'          => 'sometimes|max:500',
         ]);
 
-        $url->update([
-            'alias' => $request->alias,
-            'mobile_number' => $request->mobile_number,
-            'text' => $request->text,
-        ]);
+        $url->update($request->only('alias', 'mobile_number', 'text'));
 
-        return redirect()->route('generate.show', $url->id);
+        return redirect()->route('generate.show', $url->hashid);
     }
 }

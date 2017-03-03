@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Edit "{{ $url->alias }}" content.</div>
                 <div class="panel-body">
-					{!! Form::open(['method' => 'POST', 'route' => ['generate.update', $url->id]]) !!}
+					{!! Form::open(['method' => 'POST', 'route' => ['generate.update', $url->hashid]]) !!}
 
 						{{ method_field('PUT') }}
 

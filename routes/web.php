@@ -19,7 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::resource('generate', 'GenerateUrlController', ['parameters' => ['generate' => 'url']]);
+Route::resource('generate', 'GenerateUrlController', ['parameters' => [
+    'generate' => 'url',
+]]);
 
 Route::group(['domain' => 'hi.jomwasap.my'], function () {
     Route::get('{alias}', 'VisitUrlController@go');
