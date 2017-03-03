@@ -9,7 +9,8 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",
-        "propaganistas/laravel-phone": "^2.8"
+        "propaganistas/laravel-phone": "^2.8",
+        "vinkla/hashids": "^3.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

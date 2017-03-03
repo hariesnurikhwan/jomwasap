@@ -27,6 +27,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function addURL(ShortenedUrl $url)
+    {
+        return $this->url()->save($url);
+    }
+
     public function url()
     {
         return $this->hasMany(ShortenedUrl::class);

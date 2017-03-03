@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
 					View "{{ $url->alias }}" Link Content.
-					<a href="{{ route('generate.edit', $url->id) }}" class="btn btn-success btn-xs pull-right">Edit Link</a>
+					<a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-success btn-xs pull-right">Edit Link</a>
                 </div>
                 <div class="panel-body">
                     <dl class="dl-horizontal">
