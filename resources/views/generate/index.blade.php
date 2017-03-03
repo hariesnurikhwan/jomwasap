@@ -27,8 +27,8 @@
                                         <td>{{ url('https://hi.jomwasap.my/' . $url->alias) }} <a href="https://hi.jomwasap.my/{{ $url->alias }}" class="label label-success pull-right">Visit</a></td>
                                         <td>{{ $url->mobile_number }}</td>
                                         <td>
-                                            <a href="{{ route('generate.show', $url->id) }}" class="btn btn-primary btn-xs">Show</a>
-                                            <a href="{{ route('generate.edit', $url->id) }}" class="btn btn-warning btn-xs">Edit</a>
+                                            <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-xs">Show</a>
+                                            <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-warning btn-xs">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach
