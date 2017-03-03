@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ShortenedUrl;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use libphonenumber\PhoneNumberFormat;
 
 class GenerateUrlController extends Controller
 {
@@ -83,7 +84,7 @@ class GenerateUrlController extends Controller
      */
     public function edit(ShortenedUrl $url)
     {
-        return view('generate.show', [
+        return view('generate.edit', [
             'url' => $url,
         ]);
     }
