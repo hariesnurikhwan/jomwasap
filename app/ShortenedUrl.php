@@ -9,24 +9,13 @@ class ShortenedUrl extends Model
 {
     protected $guarded = [];
 
-    public static function boot()
+    public function setAliasAttribute($value)
     {
-        static::creating(function ($url) {
-            $url->alias = self::generateDefaultAliasIfEmpty($url);
-        });
-
-        static::updating(function ($url) {
-            $url->alias = self::generateDefaultAliasIfEmpty($url);
-        });
-    }
-
-    private static function generateDefaultAliasIfEmpty(ShortenedUrl $url)
-    {
-        if ($url->alias === null || $url->alias === '') {
-            return str_random(15) . strtotime('now');
+        if ($value === null || $value === '') {
+            $this->attributes['alias'] = str_random(5) . strtotime('now');
+        } else {
+            $this->attributes['alias'] = $value;
         }
-
-        return $url->alias;
     }
 
     public function getHashidAttribute($value)
