@@ -19,6 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::resource('generate', 'GenerateUrlController');
+Route::resource('generate', 'GenerateUrlController', ['parameters' => ['generate' => 'url']]);
 
 Route::get('go/{alias}', 'VisitUrlController@go');
