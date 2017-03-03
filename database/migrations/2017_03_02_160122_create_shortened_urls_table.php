@@ -17,7 +17,7 @@ class CreateShortenedUrlsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsinged()->nullable();
             $table->string('alias', 50)->unique();
-            $table->string('mobile_number', 11);
+            $table->string('mobile_number', 13);
             $table->text('text')->nullable();
             $table->boolean('enabled')->default(1);
             $table->timestamps();
