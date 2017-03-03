@@ -12,21 +12,21 @@ class ShortenedUrl extends Model
     public static function boot()
     {
         static::creating(function ($url) {
-            if ($url->alias === null || $url->alias === '') {
-                $url->alias = self::generateDefaultAlias();
-            }
+            $url->alias = self::generateDefaultAliasIfEmpty($url);
         });
 
         static::updating(function ($url) {
-            if ($url->alias === null || $url->alias === '') {
-                $url->alias = self::generateDefaultAlias();
-            }
+            $url->alias = self::generateDefaultAliasIfEmpty($url);
         });
     }
 
-    private static function generateDefaultAlias()
+    private static function generateDefaultAliasIfEmpty(ShortenedUrl $url)
     {
-        return str_random(15) . strtotime('now');
+        if ($url->alias === null || $url->alias === '') {
+            return str_random(15) . strtotime('now');
+        }
+
+        return $url->alias;
     }
 
     public function getHashidAttribute($value)
