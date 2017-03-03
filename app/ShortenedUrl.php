@@ -23,7 +23,7 @@ class ShortenedUrl extends Model
     private static function generateDefaultAliasIfEmpty(ShortenedUrl $url)
     {
         if ($url->alias === null || $url->alias === '') {
-            return str_random(15) . strtotime('now');
+            return str_random(5) . strtotime('now');
         }
 
         return $url->alias;
