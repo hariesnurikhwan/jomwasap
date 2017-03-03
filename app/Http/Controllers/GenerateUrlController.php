@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\ShortenedUrl;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use libphonenumber\PhoneNumberFormat;
 
 class GenerateUrlController extends Controller
 {
@@ -56,7 +55,7 @@ class GenerateUrlController extends Controller
 
         $url = $user->url()->create([
             'alias' => $request->alias,
-            'mobile_number' => phone($request->mobile_number, 'MY', PhoneNumberFormat::E164),
+            'mobile_number' => $request->mobile_number,
             'text' => $request->text,
         ]);
 
@@ -101,15 +100,15 @@ class GenerateUrlController extends Controller
         $this->validate($request, [
             'alias' => [
                 'sometimes',
-                Rule::unique('shortened_urls')->ignore($url),
+                Rule::unique('shortened_urls')->ignore($url->id),
             ],
             'mobile_number' => 'required|phone:MY',
             'text' => 'sometimes|max:500',
         ]);
 
-        $url = ShortenedUrl::create([
+        $url->update([
             'alias' => $request->alias,
-            'mobile_number' => phone($request->mobile_number, 'MY', PhoneNumberFormat::E164),
+            'mobile_number' => $request->mobile_number,
             'text' => $request->text,
         ]);
 

@@ -7,7 +7,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Edit "{{ $url->alias }}" content.</div>
                 <div class="panel-body">
-					{!! Form::open(['method' => 'POST', 'route' => 'generate.store']) !!}
+					{!! Form::open(['method' => 'POST', 'route' => ['generate.update', $url->id]]) !!}
+
+						{{ method_field('PUT') }}
 
 					    <div class="form-group{{ $errors->has('alias') ? ' has-error' : '' }}">
 					        {!! Form::label('alias', 'Short URL') !!}
