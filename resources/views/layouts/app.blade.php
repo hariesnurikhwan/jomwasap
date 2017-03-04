@@ -81,7 +81,13 @@
 
         @yield('content')
     </div>
-
+    <div class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+            <p class="navbar-text pull-right">
+                Developed By <a href="https://fb.me/hariesnurikhwan" target="_blank" >Haries Nur Ikhwan</a>
+            </p>
+        </div>
+    </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
