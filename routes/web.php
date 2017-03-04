@@ -24,3 +24,5 @@ Route::resource('generate', 'GenerateUrlController', ['parameters' => ['generate
 Route::group(['domain' => 'hi.jomwasap.my'], function () {
     Route::get('{alias}', 'VisitUrlController@go');
 });
+
+Route::get('/go/{alias}', 'VisitUrlController@go');

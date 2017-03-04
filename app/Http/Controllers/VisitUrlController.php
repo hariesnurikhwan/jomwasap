@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ShortenedUrl;
+use Jenssegers\Agent\Agent;
 use libphonenumber\PhoneNumberFormat;
 
 class VisitUrlController extends Controller
@@ -15,8 +16,19 @@ class VisitUrlController extends Controller
 
         $mobileNumber = phone($url->mobile_number, 'MY', PhoneNumberFormat::E164);
 
-        $redirectWhatsApp = "whatsapp://send?text={$text}&phone={$mobileNumber}";
+        $redirectApp = "whatsapp://send?text={$text}&phone={$mobileNumber}";
+        $redirectWeb = "https://web.whatsapp.com/send?text={$text}&phone={$mobileNumber}";
 
-        return redirect($redirectWhatsApp);
+        $agent = new Agent();
+
+        if ($agent->isMobile()) {
+            return redirect($redirectApp);
+        }
+
+        return view('redirector', [
+            'redirectApp' => $redirectApp,
+            'redirectWeb' => $redirectWeb,
+            'os' => $agent->platform(),
+        ]);
     }
 }
