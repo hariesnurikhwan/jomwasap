@@ -57,7 +57,7 @@ class GenerateUrlController extends Controller
                 Rule::unique('shortened_urls'),
             ],
             'mobile_number' => 'required|phone:MY',
-            'text' => 'sometimes|max:500',
+            'text' => 'sometimes|max:1000',
         ]);
 
         $url = Auth::user()->addURL(new ShortenedUrl(
@@ -108,7 +108,7 @@ class GenerateUrlController extends Controller
                 Rule::unique('shortened_urls')->ignore($url->id),
             ],
             'mobile_number' => 'required|phone:MY',
-            'text' => 'sometimes|max:500',
+            'text' => 'sometimes|max:1000',
         ]);
 
         $url->update($request->only('alias', 'mobile_number', 'text'));
