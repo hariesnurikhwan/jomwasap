@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    {{ config('app.name') }}
+                    JOM Wasap
                 </div>
                 <h4>
                     WhatsApp Click to Chat. Try <a href="https://hi.jomwasap.my/demo" class="btn btn-success btn-xs">Click Me</a>
