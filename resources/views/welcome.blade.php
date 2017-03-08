@@ -9,6 +9,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        @include('partials.facebookMeta')
 
         <!-- Styles -->
         <style>
@@ -83,7 +84,7 @@
                     {{ config('app.name') }}
                 </div>
                 <h4>
-                    Clickable WhatsApp Link. Try <a href="https://hi.jomwasap.my/demo" class="btn btn-success btn-xs">Click Me</a>
+                    WhatsApp Click to Chat. Try <a href="https://hi.jomwasap.my/demo" class="btn btn-success btn-xs">Click Me</a>
                 </h4>
             </div>
         </div>

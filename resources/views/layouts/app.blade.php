@@ -14,6 +14,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/align.css') }}" rel="stylesheet">
 
+    @include('partials.facebookMeta')
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
