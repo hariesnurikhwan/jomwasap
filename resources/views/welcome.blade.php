@@ -86,6 +86,18 @@
                 <h4>
                     WhatsApp Click to Chat. Try <a href="https://hi.jomwasap.my/demo" class="btn btn-success btn-xs">Click Me</a>
                 </h4>
+                <div class="alert alert-danger">
+                    <strong>Bad News</strong>
+                    <p>
+                        Due to our main server is corrupted, we've lost all data and unable to recover any data.
+                    </p>
+                    <p>
+                        I'm sorry for the inconvenience. You're required to register again and add the links again.
+                    </p>
+                    <p>
+                        Please join our Facebook Group for latest update. Click to join <a href="https://www.facebook.com/groups/jomwasap.my/" class="btn btn-xs btn-primary">JOMWasap Group</a>
+                    </p>
+                </div>
             </div>
         </div>
     </body>
