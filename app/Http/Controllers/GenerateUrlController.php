@@ -108,7 +108,7 @@ class GenerateUrlController extends Controller
                 Rule::unique('shortened_urls')->ignore($url->id),
             ],
             'mobile_number' => 'required|phone:MY',
-            'text'          => 'sometimes|max:1000',
+            'text'          => 'sometimes|max:5000',
         ]);
 
         $url->update($request->only('alias', 'mobile_number', 'text'));
