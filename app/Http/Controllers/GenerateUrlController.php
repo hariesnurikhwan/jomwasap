@@ -52,12 +52,12 @@ class GenerateUrlController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'alias' => [
+            'alias'         => [
                 'sometimes',
                 Rule::unique('shortened_urls'),
             ],
             'mobile_number' => 'required|phone:MY',
-            'text' => 'sometimes|max:1000',
+            'text'          => 'sometimes|max:5000',
         ]);
 
         $url = Auth::user()->addURL(new ShortenedUrl(
@@ -103,12 +103,12 @@ class GenerateUrlController extends Controller
     public function update(Request $request, ShortenedUrl $url)
     {
         $this->validate($request, [
-            'alias' => [
+            'alias'         => [
                 'required',
                 Rule::unique('shortened_urls')->ignore($url->id),
             ],
             'mobile_number' => 'required|phone:MY',
-            'text' => 'sometimes|max:1000',
+            'text'          => 'sometimes|max:1000',
         ]);
 
         $url->update($request->only('alias', 'mobile_number', 'text'));
