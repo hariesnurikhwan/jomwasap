@@ -36,6 +36,9 @@
                         </table>
                     </div>
                 </div>
+                <div class="pull-right">
+                    {{ $urls->links() }}
+                </div>
             </div>
         </div>
     </div>
