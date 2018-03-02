@@ -88,5 +88,6 @@
                 </h4>
             </div>
         </div>
+        @include('partials.googleAnalytics')
     </body>
 </html>
