@@ -20,5 +20,23 @@ const app = new Vue({
 });
 
 const ClipboardJS = require('clipboard');
-new ClipboardJS('.btn');
+var clipboard = new ClipboardJS('.btn');
 
+clipboard.on('success', function(e){
+    var button = $(e.trigger).tooltip({
+	  trigger: 'click',
+	  placement: 'left'
+	});;
+    showTooltip(button, 'Link Copied!');
+  	hideTooltip(button);
+})
+
+function showTooltip(button, message) {
+  button.attr('data-original-title', message).tooltip('show');
+}
+
+function hideTooltip(button) {
+  setTimeout(function() {
+    button.tooltip('hide');
+  }, 1000);
+}
