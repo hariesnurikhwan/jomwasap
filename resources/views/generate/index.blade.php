@@ -24,7 +24,14 @@
                                 @foreach($urls as $url)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ url('https://hi.jomwasap.my/' . $url->alias) }} <a href="https://hi.jomwasap.my/{{ $url->alias }}" class="label label-success pull-right">Visit</a></td>
+                                        <td>
+                                            {{ url('https://hi.jomwasap.my/' . $url->alias) }}
+                                            <div class="pull-right">
+                                                <button class="btn btn-info btn-xs" data-clipboard-text="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">
+                                                    Copy
+                                                </button>
+                                            </div>
+                                        </td>
                                         <td>{{ $url->mobile_number }}</td>
                                         <td>
                                             <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-xs">Show</a>

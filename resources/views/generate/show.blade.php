@@ -12,7 +12,14 @@
                 <div class="panel-body">
                     <dl class="dl-horizontal">
                         <dt>URL</dt>
-                            <dd>https://hi.jomwasap.my/{{ $url->alias }}</dd>
+                            <dd>
+                                https://hi.jomwasap.my/{{ $url->alias }}
+                                <div class="pull-right">
+                                    <button class="btn btn-info btn-xs" data-clipboard-text="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">
+                                        Copy
+                                    </button>
+                                </div>
+                            </dd>
                         <dt>Mobile Number</dt>
                             <dd>{{ phone($url->mobile_number, 'MY') }}</dd>
                         <dt>Pretext Chat</dt>
