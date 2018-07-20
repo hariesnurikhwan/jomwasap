@@ -9,6 +9,8 @@ class ShortenedUrl extends Model
 {
     protected $guarded = [];
 
+    protected $with = ['group'];
+
     public function setAliasAttribute($value)
     {
         if ($value === null || $value === '') {
@@ -21,5 +23,10 @@ class ShortenedUrl extends Model
     public function getHashidAttribute($value)
     {
         return Hashids::encode($this->id);
+    }
+
+    public function group()
+    {
+        return $this->hasMany(Group::class, 'shortened_urls_id');
     }
 }

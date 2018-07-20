@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Group;
 use App\ShortenedUrl;
 use Auth;
 use Illuminate\Http\Request;
@@ -51,18 +52,51 @@ class GenerateUrlController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
-            'alias'         => [
-                'sometimes',
-                Rule::unique('shortened_urls'),
+            'type' => [
+                'required',
+                Rule::in(['single', 'group']),
+                'bail',
             ],
-            'mobile_number' => 'required|phone:MY',
-            'text'          => 'sometimes|max:5000',
         ]);
 
-        $url = Auth::user()->addURL(new ShortenedUrl(
-            $request->only(['alias', 'mobile_number', 'text'])
-        ));
+        if ($request->type === 'single') {
+            $this->validate($request, [
+                'alias'         => [
+                    'sometimes',
+                    Rule::unique('shortened_urls'),
+                ],
+                'mobile_number' => 'required|phone:MY',
+                'text'          => 'sometimes|max:5000',
+            ]);
+
+            $url = Auth::user()->addURL(new ShortenedUrl(
+                $request->only(['alias', 'mobile_number', 'text', 'type'])
+            ));
+        } elseif ($request->type === 'group') {
+
+            $this->validate($request, [
+                'alias'            => [
+                    'sometimes',
+                    Rule::unique('shortened_urls'),
+                ],
+                'mobile_numbers'   => 'required|array|between:2,5',
+                'mobile_numbers.*' => 'distinct|phone:MY',
+            ]);
+
+            $url = Auth::user()->addURL(new ShortenedUrl(
+                $request->only(['alias', 'type', 'text'])
+            ));
+
+            foreach ($request->mobile_numbers as $number) {
+                Group::create([
+                    'shortened_urls_id' => $url->id,
+                    'mobile_number'     => $number,
+                ]);
+            }
+
+        }
 
         return redirect()->route('generate.show', $url->hashid);
     }
@@ -75,6 +109,8 @@ class GenerateUrlController extends Controller
      */
     public function show(ShortenedUrl $url)
     {
+
+        // dd($url->group->pluck('mobile_number')[0]);
         return view('generate.show', [
             'url' => $url,
         ]);
@@ -102,16 +138,64 @@ class GenerateUrlController extends Controller
      */
     public function update(Request $request, ShortenedUrl $url)
     {
+
         $this->validate($request, [
-            'alias'         => [
+            'type' => [
                 'required',
-                Rule::unique('shortened_urls')->ignore($url->id),
+                Rule::in(['single', 'group']),
+                'bail',
             ],
-            'mobile_number' => 'required|phone:MY',
-            'text'          => 'sometimes|max:5000',
         ]);
 
-        $url->update($request->only('alias', 'mobile_number', 'text'));
+        if ($url->type === 'single') {
+            $this->validate($request, [
+                'alias'         => [
+                    'required',
+                    Rule::unique('shortened_urls')->ignore($url->id),
+                ],
+                'mobile_number' => 'required|phone:MY',
+                'text'          => 'sometimes|max:5000',
+            ]);
+
+            $url->update($request->only('alias', 'mobile_number', 'text'));
+
+        } elseif ($url->type === 'group') {
+            $this->validate($request, [
+                'mobile_numbers'   => 'required|array|between:2,5',
+                'mobile_numbers.*' => 'distinct|phone:MY',
+            ]);
+
+            $url->update($request->only('alias', 'text'));
+
+            if (is_array($request->mobile_numbers) || is_object($request->mobile_numbers)) {
+                foreach ($request->mobile_numbers as $number) {
+                    if (!Group::where('mobile_number', $number)->exists()) {
+                        Group::create([
+                            'shortened_urls' => $url->id,
+                            'mobile_number'  => $number,
+                        ]);
+                    }
+                }
+            }
+
+            if (is_array($request->new_mobile_numbers) || is_object($request->new_mobile_numbers)) {
+                foreach ($request->new_mobile_numbers as $number) {
+                    Group::create([
+                        'shortened_urls_id' => $url->id,
+                        'mobile_number'     => $number,
+                    ]);
+                }
+            }
+
+            $diff = array_diff($url->group->pluck('mobile_number')->toArray(), $request->mobile_numbers);
+
+            if (is_array($diff) || is_object($diff)) {
+                foreach ($diff as $number) {
+                    Group::where('mobile_number', $number)->delete();
+                }
+            }
+
+        }
 
         return redirect()->route('generate.show', $url->hashid);
     }
