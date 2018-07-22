@@ -7,36 +7,39 @@
 
 require('./bootstrap');
 
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+// Vue.component('example', require('./components/Example.vue'));
 
-const app = new Vue({
-    el: '#app'
-});
+// const app = new Vue({
+//     el: '#app'
+// });
 
-const ClipboardJS = require('clipboard');
-var clipboard = new ClipboardJS('.btn');
+// const ClipboardJS = require('clipboard');
+// var clipboard = new ClipboardJS('.btn');
 
-clipboard.on('success', function(e){
-    var button = $(e.trigger).tooltip({
-	  trigger: 'click',
-	  placement: 'left'
-	});;
-    showTooltip(button, 'Link Copied!');
-  	hideTooltip(button);
-})
+// clipboard.on('success', function(e){
+//     var button = $(e.trigger).tooltip({
+// 	  trigger: 'click',
+// 	  placement: 'left'
+// 	});;
+//     showTooltip(button, 'Link Copied!');
+//   	hideTooltip(button);
+// })
 
-function showTooltip(button, message) {
-  button.attr('data-original-title', message).tooltip('show');
-}
+// function showTooltip(button, message) {
+//   button.attr('data-original-title', message).tooltip('show');
+// }
 
-function hideTooltip(button) {
-  setTimeout(function() {
-    button.tooltip('hide');
-  }, 1000);
-}
+// function hideTooltip(button) {
+//   setTimeout(function() {
+//     button.tooltip('hide');
+//   }, 1000);
+// }

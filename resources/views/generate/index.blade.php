@@ -14,30 +14,41 @@
                         <table class="table table-condensed">
                             <thead>
                                 <tr>
-                                    <td>#</td>
-                                    <td>URL</td>
-                                    <td>Mobile Number</td>
-                                    <td>Actions</td>
+                                    <th>#</th>
+                                    <th>URL</th>
+                                    <th>Type</th>
+                                    <th>Mobile Number</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($urls as $url)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>
-                                            {{ url('https://hi.jomwasap.my/' . $url->alias) }}
-                                            <div class="pull-right">
-                                                <button class="btn btn-info btn-xs" data-clipboard-text="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">
-                                                    Copy
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td>{{ $url->mobile_number }}</td>
-                                        <td>
-                                            <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-xs">Show</a>
-                                            <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-warning btn-xs">Edit</a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        {{ url('https://hi.jomwasap.my/' . $url->alias) }}
+                                        <div class="pull-right">
+                                            <button class="btn btn-info btn-xs" data-clipboard-text="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">
+                                                <span class="glyphicon glyphicon-copy"></span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>{{ ucfirst($url->type) }}</td>
+                                    @if($url->type === 'single')
+                                    <td>{{ $url->mobile_number }}</td>
+                                    @else
+                                    <td>
+                                        @foreach($url->group->pluck('mobile_number')->toArray() as $number)
+                                        {{$number}}
+                                        <br>
+                                        @endforeach
+                                    </td>
+                                    @endif
+                                    <td>
+                                        <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-xs">Show</a>
+                                        <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-warning btn-xs">Edit</a>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>

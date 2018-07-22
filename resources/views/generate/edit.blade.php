@@ -66,6 +66,15 @@
 					{!! Form::close() !!}
 				</div>
 			</div>
+			@if ($errors->any())
+			<div class="alert alert-danger">
+				<ul>
+					@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+			@endif
 		</div>
 	</div>
 </div>
@@ -84,7 +93,7 @@
 		event.preventDefault();
 		displayGroup = $('#displayGroup');
 		inputField = `<div class="input-group form-group">
-		<input type="text" class="form-control" name="new_mobile_numbers[]">
+		<input type="text" class="form-control" name="mobile_numbers[]">
 		<span class="input-group-btn">
 		<i style="padding: 0;" class="btn btn-danger">
 		<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span>

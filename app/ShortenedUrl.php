@@ -9,8 +9,6 @@ class ShortenedUrl extends Model
 {
     protected $guarded = [];
 
-    protected $with = ['group'];
-
     public function setAliasAttribute($value)
     {
         if ($value === null || $value === '') {

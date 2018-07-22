@@ -80,62 +80,73 @@
 
 <script>
 
-	var count = 0;
+	window.onload = function() {
+		if (window.$) {
+                // jQuery is loaded
+                console.log("Yeah!");
+            } else {
+                // jQuery is not loaded
+                console.log("Doesn't Work");
+            }
+        }
+
+        var count = 0;
 
 
-	function display(){
-		type = event.target.value;
-		displaySingle = $('#displaySingle');
-		displayGroup = $('#displayGroup');
-		if(type === 'single'){
-			displayGroup.hide();
-			displaySingle.show();
-		} else if(type === 'group'){
-			displayGroup.show();
-			displaySingle.hide();
-		}
-	}
+        function display(){
+        	type = event.target.value;
+        	displaySingle = $('#displaySingle');
+        	displayGroup = $('#displayGroup');
+        	if(type === 'single'){
+        		displayGroup.hide();
+        		displaySingle.show();
+        	} else if(type === 'group'){
+        		displayGroup.show();
+        		displaySingle.hide();
+        	}
+        }
 
-	function addField(){
+        function addField(){
 
-		count = count + 1;
+        	count = count + 1;
 
-		if (count == 5) {
-			$('#addfield').attr("disabled","disabled");
-		}
+        	if (count == 5) {
+        		$('#addfield').attr("disabled","disabled");
+        	}
 
-		event.preventDefault();
-		displayGroup = $('#displayGroup');
-		inputField = `<div class="input-group form-group">
-		<input type="text" class="form-control" name="mobile_numbers[]">
-		<span class="input-group-btn">
-		<i style="padding: 0;" class="btn btn-danger">
-		<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span>
-		</i>
-		</span>
-		</div>
-		`
+        	event.preventDefault();
+        	displayGroup = $('#displayGroup');
+        	inputField = `<div class="input-group form-group">
+        	<input type="text" class="form-control" name="mobile_numbers[]">
+        	<span class="input-group-btn">
+        	<i style="padding: 0;" class="btn btn-danger">
+        	<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span>
+        	</i>
+        	</span>
+        	</div>
+        	`
 
-		displayGroup.append(inputField);
-
-
-	}
-
-	function removeField(){
-		event.preventDefault();
-
-		count = count - 1;
-
-		$('#addfield').attr("disabled",false);
+        	displayGroup.append(inputField);
 
 
-		target = event.target
+        }
 
-		$(target).parent().parent().parent().remove();
-	}
+        function removeField(){
+        	event.preventDefault();
+
+        	count = count - 1;
+
+        	$('#addfield').attr("disabled",false);
+
+
+        	target = event.target
+
+        	$(target).parent().parent().parent().remove();
+        }
 
 
 
-</script>
 
-@endsection
+    </script>
+
+    @endsection
