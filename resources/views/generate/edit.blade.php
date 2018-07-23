@@ -21,7 +21,7 @@
 						<p class="text-default">If left empty, system will automatically generate the alias.</p>
 					</div>
 
-					<input name="type" type="text" value="{{$url->type}}" style="display: none;">
+					<input name="type" type="hidden" value="{{$url->type}}" style="display: none;">
 
 
 					@if($url->type === 'single')
