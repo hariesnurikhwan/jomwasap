@@ -135,23 +135,27 @@ class GenerateUrlController extends Controller
     {
 
         $this->validate($request, [
+            'type'             => [
+                'required',
+                Rule::in(['single', 'group']),
+                'bail',
+            ],
             'alias'            => [
                 'required',
                 Rule::unique('shortened_urls')->ignore($url->id),
             ],
             'text'             => 'sometimes|max:5000',
             'mobile_number'    => [
-                'sometimes',
-                'required',
+                'required_if:type,single',
                 'text' => 'sometimes|max:5000',
                 'phone:MY',
             ],
             'mobile_numbers'   => [
-                'sometimes',
-                'required',
+                'required_if:type,group',
                 'between:2,5',
             ],
             'mobile_numbers.*' => [
+                'required_if:type,group',
                 'distinct',
                 'phone:MY',
             ],

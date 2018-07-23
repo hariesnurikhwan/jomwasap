@@ -21,6 +21,9 @@
 						<p class="text-default">If left empty, system will automatically generate the alias.</p>
 					</div>
 
+					<input name="type" type="text" value="{{$url->type}}" style="display: none;">
+
+
 					@if($url->type === 'single')
 					<div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : '' }}">
 						{!! Form::label('mobile_number', 'Mobile Number *') !!}
