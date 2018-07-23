@@ -14,7 +14,11 @@ class VisitUrlController extends Controller
 
         $text = rawurlencode($url->text);
 
-        $mobileNumber = phone($url->mobile_number, 'MY', PhoneNumberFormat::E164);
+        if ($url->type === 'single') {
+            $mobileNumber = phone($url->mobile_number, 'MY', PhoneNumberFormat::E164);
+        } elseif ($url->type === 'group') {
+            $mobileNumber = $url->group()->inRandomOrder()->get();
+        }
 
         $redirectApp = "whatsapp://send?text={$text}&phone={$mobileNumber}";
         $redirectWeb = "https://web.whatsapp.com/send?text={$text}&phone={$mobileNumber}";
@@ -28,7 +32,7 @@ class VisitUrlController extends Controller
         return view('redirector', [
             'redirectApp' => $redirectApp,
             'redirectWeb' => $redirectWeb,
-            'os' => $agent->platform(),
+            'os'          => $agent->platform(),
         ]);
     }
 }

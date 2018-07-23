@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Group;
 use App\ShortenedUrl;
 use Auth;
 use Illuminate\Http\Request;
@@ -51,18 +52,47 @@ class GenerateUrlController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
-            'alias'         => [
+            'type'             => [
+                'required',
+                Rule::in(['single', 'group']),
+                'bail',
+            ],
+            'alias'            => [
                 'sometimes',
                 Rule::unique('shortened_urls'),
             ],
-            'mobile_number' => 'required|phone:MY',
-            'text'          => 'sometimes|max:5000',
+            'mobile_number'    => [
+                'required_if:type,single',
+                'phone:MY',
+            ],
+            'mobile_numbers'   => [
+                'required_if:type,group',
+                'between:2,5',
+            ],
+            'mobile_numbers.*' => 'distinct|phone:MY',
         ]);
 
-        $url = Auth::user()->addURL(new ShortenedUrl(
-            $request->only(['alias', 'mobile_number', 'text'])
-        ));
+        if ($request->type === 'single') {
+
+            $url = Auth::user()->addURL(new ShortenedUrl(
+                $request->only(['alias', 'mobile_number', 'text', 'type'])
+            ));
+
+        } elseif ($request->type === 'group') {
+
+            $url = Auth::user()->addURL(new ShortenedUrl(
+                $request->only(['alias', 'type', 'text'])
+            ));
+
+            foreach ($request->mobile_numbers as $number) {
+                $url->group()->create([
+                    'mobile_number' => $number,
+                ]);
+            }
+
+        }
 
         return redirect()->route('generate.show', $url->hashid);
     }
@@ -75,6 +105,7 @@ class GenerateUrlController extends Controller
      */
     public function show(ShortenedUrl $url)
     {
+
         return view('generate.show', [
             'url' => $url,
         ]);
@@ -102,16 +133,57 @@ class GenerateUrlController extends Controller
      */
     public function update(Request $request, ShortenedUrl $url)
     {
+
         $this->validate($request, [
-            'alias'         => [
+            'type'             => [
+                'required',
+                Rule::in(['single', 'group']),
+                'bail',
+            ],
+            'alias'            => [
                 'required',
                 Rule::unique('shortened_urls')->ignore($url->id),
             ],
-            'mobile_number' => 'required|phone:MY',
-            'text'          => 'sometimes|max:5000',
+            'text'             => 'sometimes|max:5000',
+            'mobile_number'    => [
+                'required_if:type,single',
+                'text' => 'sometimes|max:5000',
+                'phone:MY',
+            ],
+            'mobile_numbers'   => [
+                'required_if:type,group',
+                'between:2,5',
+            ],
+            'mobile_numbers.*' => [
+                'required_if:type,group',
+                'distinct',
+                'phone:MY',
+            ],
         ]);
 
-        $url->update($request->only('alias', 'mobile_number', 'text'));
+        if ($url->type === 'single') {
+
+            $url->update($request->only('alias', 'mobile_number', 'text'));
+
+        } elseif ($url->type === 'group') {
+
+            $mobile_numbers = $request->mobile_numbers;
+
+            $existingNumber = $url->group()->pluck('mobile_number')->toArray();
+
+            $editedNumbers = array_diff($mobile_numbers, $existingNumber);
+
+            $url->update($request->only('alias', 'text'));
+
+            foreach ($mobile_numbers as $number) {
+                $url->group()->firstOrCreate(['mobile_number' => $number]);
+            }
+
+            foreach ($editedNumbers as $number) {
+                $url->group()->where('mobile_number', $number)->delete();
+            }
+
+        }
 
         return redirect()->route('generate.show', $url->hashid);
     }

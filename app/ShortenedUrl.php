@@ -22,4 +22,9 @@ class ShortenedUrl extends Model
     {
         return Hashids::encode($this->id);
     }
+
+    public function group()
+    {
+        return $this->hasMany(Group::class, 'shortened_urls_id');
+    }
 }
