@@ -80,6 +80,7 @@
 </div>
 
 <script>
+
 	var count = parseInt($('#mobile_numbers_count').text());
 
 	function addField(){

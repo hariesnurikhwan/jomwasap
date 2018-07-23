@@ -141,16 +141,17 @@ class GenerateUrlController extends Controller
             ],
             'text'             => 'sometimes|max:5000',
             'mobile_number'    => [
-                'required_if:type,single',
+                'sometimes',
+                'required',
                 'text' => 'sometimes|max:5000',
                 'phone:MY',
             ],
             'mobile_numbers'   => [
-                'required_if:type,group',
+                'sometimes',
+                'required',
                 'between:2,5',
             ],
             'mobile_numbers.*' => [
-                'required_if:type,group',
                 'distinct',
                 'phone:MY',
             ],
