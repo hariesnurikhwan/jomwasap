@@ -1,6 +1,76 @@
 @extends('layouts.app')
 
 @section('content')
+
+<script>
+
+	var count = {{count($url->group->pluck('mobile_number')->toArray())}}
+
+	function addField(){
+
+		count = count + 1;
+		console.log(count);
+		if (count == 5) {
+			$('#addfield').attr("disabled","disabled");
+		}
+
+		event.preventDefault();
+		displayGroup = $('#displayGroup');
+		inputField = `<div class="input-group form-group">
+		<input type="text" class="form-control" name="mobile_numbers[]">
+		<span class="input-group-btn">
+		<i style="padding: 0;" class="btn btn-danger">
+		<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span>
+		</i>
+		</span>
+		</div>
+		`
+		displayGroup.append(inputField);
+	}
+
+	function removeField(){
+		event.preventDefault();
+		count = count - 1;
+
+		$('#addfield').attr("disabled",false);
+
+
+		target = event.target;
+
+		$(target).parent().parent().parent().remove();
+	}
+
+	function oldField(number, error){
+		count = count + 1;
+
+		if (count == 5) {
+			$('#addfield').attr("disabled","disabled");
+		}
+
+		inputField = `<div class="form-group">
+		<div class="input-group"><input value="${number}" type="text" class="form-control" name="mobile_numbers[]">
+		<span class="input-group-btn">
+		<i style="padding: 0;" class="btn btn-danger">
+		<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span></i></span></div>
+		<small class="text-danger">${error}</small>
+		</div>
+		`
+		displayGroup = $('#displayGroup');
+		displayGroup.append(inputField);
+	}
+
+	$(window).on('load', function(){
+
+	})
+
+
+
+
+</script>
+
+
+
+
 <div class="container">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
@@ -38,13 +108,9 @@
 								<span class="glyphicon glyphicon-plus"></span>
 							</button>
 						</div>
-						@php
-						$counts = count($url->group->pluck('mobile_number')->toArray());
-						echo "<div id='mobile_numbers_count' style='display: none;'>$counts</div>";
-						@endphp
 						@foreach($url->group as $group)
 						<div class="input-group form-group">
-							<input value={{$group->mobile_number}} type="text" class="form-control" name="mobile_numbers[]">
+							<input value={{$group->mobile_number}} type="text" class="form-control" name="old_mobile_numbers[]">
 							<span class="input-group-btn">
 								<i style="padding: 0;" class="btn btn-danger">
 									<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span>
@@ -52,6 +118,16 @@
 							</span>
 						</div>
 						@endforeach
+						@if(old('mobile_numbers'))
+						@for($i = 0; $i < count(old('mobile_numbers')); $i++)
+						<script>
+							number = '{!! old('mobile_numbers')[$i] !!}';
+							error = '{!! $errors->first('mobile_numbers.' . $i) !!}';
+							oldField(number, error);
+						</script>
+
+						@endfor
+						@endif
 					</div>
 					@endif
 
@@ -73,46 +149,6 @@
 	</div>
 </div>
 
-<script>
 
-	var count = parseInt($('#mobile_numbers_count').text());
-
-	function addField(){
-
-		count = count + 1;
-		console.log(count);
-		if (count == 5) {
-			$('#addfield').attr("disabled","disabled");
-		}
-
-		event.preventDefault();
-		displayGroup = $('#displayGroup');
-		inputField = `<div class="input-group form-group">
-		<input type="text" class="form-control" name="mobile_numbers[]">
-		<span class="input-group-btn">
-		<i style="padding: 0;" class="btn btn-danger">
-		<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span>
-		</i>
-		</span>
-		</div>
-		`
-		displayGroup.append(inputField);
-	}
-
-	function removeField(){
-		event.preventDefault();
-		count = count - 1;
-
-		$('#addfield').attr("disabled",false);
-
-
-		target = event.target;
-
-		$(target).parent().parent().parent().remove();
-	}
-
-
-
-</script>
 
 @endsection

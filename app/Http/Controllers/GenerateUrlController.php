@@ -136,28 +136,28 @@ class GenerateUrlController extends Controller
     {
 
         $this->validate($request, [
-            'type'             => [
+            'type'                 => [
                 'required',
                 Rule::in(['single', 'group']),
                 'bail',
             ],
-            'alias'            => [
+            'alias'                => [
                 'required',
                 Rule::unique('shortened_urls')->ignore($url->id),
             ],
-            'text'             => 'sometimes|max:5000',
-            'mobile_number'    => [
+            'text'                 => 'sometimes|max:5000',
+            'mobile_number'        => [
                 'required_if:type,single',
-                'nullable',
                 'phone:MY',
             ],
-            'mobile_numbers'   => [
-                'required_if:type,group',
-                'nullable',
+            'old_mobile_numbers.*' => [
+                'distinct',
+                'phone:MY',
+            ],
+            'mobile_numbers'       => [
                 'between:2,5',
             ],
-            'mobile_numbers.*' => [
-                'required_if:type,group',
+            'mobile_numbers.*'     => [
                 'distinct',
                 'phone:MY',
             ],
@@ -169,7 +169,11 @@ class GenerateUrlController extends Controller
 
         } elseif ($url->type === 'group') {
 
-            $mobile_numbers = $request->mobile_numbers;
+            if ($request->mobile_numbers) {
+                $mobile_numbers = array_merge($request->mobile_numbers, $request->old_mobile_numbers);
+            } else {
+                $mobile_numbers = $request->old_mobile_numbers;
+            }
 
             $existingNumber = $url->group()->pluck('mobile_number')->toArray();
 
