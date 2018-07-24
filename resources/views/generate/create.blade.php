@@ -20,23 +20,21 @@
 					</div>
 
 
+					@if (!old('type'))
 					<select id="select-type" onchange="display()" name="type" class="form-control form-group">
 						<option>Select Type</option>
 						<option value="single">Single</option>
 						<option value="group">Group</option>
 					</select>
 
-					<div>
-						<div style="display: none" id="displayGroup">
-
-							<div class="form-group">
-								<button id="addfield" class="btn btn-primary" onclick="addField()">
-									<span class="glyphicon glyphicon-plus"></span>
-								</button>
-							</div>
+					<div style="display: none" id="displayGroup">
+						<div class="form-group">
+							<button id="addfield" class="btn btn-primary" onclick="addField()">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
 						</div>
-						<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 					</div>
+					<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 
 					<div style="display: none" id="displaySingle">
 						<div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : '' }}">
@@ -47,7 +45,84 @@
 						</div>
 					</div>
 
+					@elseif (old('type') === 'single')
+					<select id="select-type" onchange="display()" name="type" class="form-control form-group">
+						<option>Select Type</option>
+						<option selected value="single">Single</option>
+						<option value="group">Group</option>
+					</select>
 
+					<div style="display: block" id="displaySingle">
+						<div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : '' }}">
+							{!! Form::label('mobile_number', 'Mobile Number *') !!}
+							{!! Form::text('mobile_number', null, ['class' => 'form-control']) !!}
+							<small class="text-danger">{{ $errors->first('mobile_number') }}</small>
+							<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
+						</div>
+					</div>
+
+					<div style="display: none" id="displayGroup">
+						<div class="form-group">
+							<button id="addfield" class="btn btn-primary" onclick="addField()">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+						</div>
+					</div>
+
+					@elseif (old('type') === 'group')
+
+					<select id="select-type" onchange="display()" name="type" class="form-control form-group">
+						<option>Select Type</option>
+						<option value="single">Single</option>
+						<option selected value="group">Group</option>
+					</select>
+
+					<div style="display: none" id="displaySingle">
+						<div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : '' }}">
+							{!! Form::label('mobile_number', 'Mobile Number *') !!}
+							{!! Form::text('mobile_number', null, ['class' => 'form-control']) !!}
+							<small class="text-danger">{{ $errors->first('mobile_number') }}</small>
+							<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
+						</div>
+					</div>
+
+					<div style="display: block" id="displayGroup">
+						<div class="form-group">
+							<button id="addfield" class="btn btn-primary" onclick="addField()">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+
+							@for($i = 0; $i < count(old('mobile_numbers')); $i++)
+							<script>
+								 number = '{!! old('mobile_numbers')[$i] !!}';
+								 errors = {!!json_encode($errors->get('mobile_numbers.' . $i))!!};
+
+								inputField = `<div class="form-group">
+								<div class="input-group"><input value="${number}" type="text" class="form-control" name="mobile_numbers[]">
+								<span class="input-group-btn">
+								<i style="padding: 0;" class="btn btn-danger">
+								<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span>
+								</i>
+								</span></div>
+								</div>
+								`
+
+								// for (var i = 0; i < errors.length; i++) {
+								// 	console.log(errors);
+								// }
+
+								displayGroup = $('#displayGroup');
+								displayGroup.append(inputField);
+
+								_.forOwn(errors, function(value, key){
+									displayGroup.append(`<small class="text-danger">${value}</small>`)
+								})
+							</script>
+							@endfor
+						</div>
+					</div>
+
+					@endif
 
 
 					<div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
@@ -62,17 +137,8 @@
 					</div>
 
 					{!! Form::close() !!}
-				</div>
 
-				@if ($errors->any())
-				<div class="alert alert-danger">
-					<ul>
-						@foreach ($errors->all() as $error)
-						<li>{{ $error }}</li>
-						@endforeach
-					</ul>
 				</div>
-				@endif
 			</div>
 		</div>
 	</div>
@@ -109,7 +175,7 @@
 		event.preventDefault();
 		displayGroup = $('#displayGroup');
 		inputField = `<div class="input-group form-group">
-		<input type="text" class="form-control" name="mobile_numbers[]">
+		<input class="form-control" name="mobile_numbers[]">
 		<span class="input-group-btn">
 		<i style="padding: 0;" class="btn btn-danger">
 		<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span>
@@ -117,11 +183,9 @@
 		</span>
 		</div>
 		`
-
 		displayGroup.append(inputField);
-
-
 	}
+
 
 	function removeField(){
 		event.preventDefault();
