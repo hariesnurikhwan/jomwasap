@@ -17,7 +17,8 @@ class VisitUrlController extends Controller
         if ($url->type === 'single') {
             $mobileNumber = phone($url->mobile_number, 'MY', PhoneNumberFormat::E164);
         } elseif ($url->type === 'group') {
-            $mobileNumber = $url->group()->inRandomOrder()->get();
+            $mobileNumber = $url->group()->inRandomOrder()->first();
+            $mobileNumber = phone($mobileNumber->mobile_number, 'MY', PhoneNumberFormat::E164);
         }
 
         $redirectApp = "whatsapp://send?text={$text}&phone={$mobileNumber}";
