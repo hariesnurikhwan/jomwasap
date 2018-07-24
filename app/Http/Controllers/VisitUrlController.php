@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\ShortenedUrl;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Jenssegers\Agent\Agent;
 use libphonenumber\PhoneNumberFormat;
 
@@ -10,6 +12,13 @@ class VisitUrlController extends Controller
 {
     public function go($alias)
     {
+
+        if (!Cookie::get($alias)) {
+            return view('lead', [
+                'alias' => $alias,
+            ]);
+        }
+
         $url = ShortenedUrl::whereAlias($alias)->firstOrFail();
 
         $text = rawurlencode($url->text);
@@ -36,4 +45,23 @@ class VisitUrlController extends Controller
             'os'          => $agent->platform(),
         ]);
     }
+
+    public function lead(Request $request)
+    {
+
+        $this->validate($request, [
+            'alias'         => 'required',
+            'name'          => 'required',
+            'mobile_number' => 'required|phone:MY',
+        ]);
+
+        $url = ShortenedUrl::whereAlias($request->alias)->firstOrFail();
+
+        $cookie = Cookie::forever($url->alias, true);
+
+        $url->lead()->create(['name' => $request->name, 'mobile_number' => $request->mobile_number]);
+
+        return redirect()->action('VisitUrlController@go', ['alias' => $request->alias])->cookie($cookie);
+    }
+
 }

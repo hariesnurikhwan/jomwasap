@@ -24,3 +24,5 @@ Route::group(['domain' => 'hi.jomwasap.my'], function () {
 });
 
 Route::get('/go/{alias}', 'VisitUrlController@go');
+
+Route::post('/lead', 'VisitUrlController@lead')->name('lead');
