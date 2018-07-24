@@ -65,10 +65,12 @@ class GenerateUrlController extends Controller
             ],
             'mobile_number'    => [
                 'required_if:type,single',
+                'nullable',
                 'phone:MY',
             ],
             'mobile_numbers'   => [
                 'required_if:type,group',
+                'nullable',
                 'between:2,5',
             ],
             'mobile_numbers.*' => 'distinct|phone:MY',
@@ -147,11 +149,12 @@ class GenerateUrlController extends Controller
             'text'             => 'sometimes|max:5000',
             'mobile_number'    => [
                 'required_if:type,single',
-                'text' => 'sometimes|max:5000',
+                'nullable',
                 'phone:MY',
             ],
             'mobile_numbers'   => [
                 'required_if:type,group',
+                'nullable',
                 'between:2,5',
             ],
             'mobile_numbers.*' => [
