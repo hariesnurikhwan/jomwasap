@@ -173,7 +173,7 @@ class GenerateUrlController extends Controller
 
             $existingNumber = $url->group()->pluck('mobile_number')->toArray();
 
-            $editedNumbers = array_diff($mobile_numbers, $existingNumber);
+            $editedNumbers = array_diff($existingNumber, $mobile_numbers);
 
             $url->update($request->only('alias', 'text'));
 
