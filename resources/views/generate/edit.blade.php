@@ -60,7 +60,6 @@
 						{!! Form::textarea('text', $url->text, ['class' => 'form-control']) !!}
 						<small class="text-danger">{{ $errors->first('text') }}</small>
 					</div>
-
 					<div class="btn-group pull-right">
 						{!! Form::reset("Reset", ['class' => 'btn btn-warning']) !!}
 						{!! Form::submit("Update", ['class' => 'btn btn-success']) !!}

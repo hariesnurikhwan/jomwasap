@@ -107,6 +107,7 @@ class GenerateUrlController extends Controller
      */
     public function show(ShortenedUrl $url)
     {
+
         return view('generate.show', [
             'url' => $url,
         ]);

@@ -2,10 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\ShortenedUrl;
 use Closure;
 use Illuminate\Support\Facades\Cookie;
 
-class CheckCookie
+class CheckLeadCapture
 {
     /**
      * Handle an incoming request.
@@ -18,8 +19,12 @@ class CheckCookie
     {
         $alias = $request->route('alias');
 
-        if (!Cookie::get($alias)) {
-            return response()->view('lead', ['alias' => $alias]);
+        $url = ShortenedUrl::whereAlias($alias)->firstOrFail();
+
+        if ($url->enable_lead_capture) {
+            if (!Cookie::get($alias)) {
+                return response()->view('lead', ['alias' => $alias]);
+            }
         }
 
         return $next($request);

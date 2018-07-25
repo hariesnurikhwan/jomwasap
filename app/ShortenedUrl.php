@@ -32,4 +32,10 @@ class ShortenedUrl extends Model
     {
         return $this->hasMany(Lead::class);
     }
+
+    public function switchLeadCapture()
+    {
+        $this->enable_lead_capture = !$this->enable_lead_capture;
+        $this->save();
+    }
 }

@@ -57,6 +57,6 @@ class Kernel extends HttpKernel
         'guest'                => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle'             => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'URLMustBelongToOwner' => \App\Http\Middleware\GeneratedResourceOnlyForResourceOwner::class,
-        'CheckCookie'          => \App\Http\Middleware\CheckCookie::class,
+        'CheckLeadCapture'     => \App\Http\Middleware\CheckLeadCapture::class,
     ];
 }

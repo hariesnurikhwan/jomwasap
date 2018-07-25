@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cookie;
 
 class LeadController extends Controller
 {
-    public function index(Request $request)
+    public function store(Request $request)
     {
 
         $this->validate($request, [
@@ -24,5 +24,15 @@ class LeadController extends Controller
         $url->lead()->create(['name' => $request->name, 'mobile_number' => $request->mobile_number]);
 
         return redirect()->action('VisitUrlController@go', ['alias' => $request->alias])->cookie($cookie);
+    }
+
+    public function toggle($alias)
+    {
+        $url = ShortenedUrl::whereAlias($alias)->firstOrFail();
+
+        $url->switchLeadCapture();
+
+        return $url;
+
     }
 }
