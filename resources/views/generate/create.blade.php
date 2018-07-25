@@ -31,7 +31,7 @@
 		event.preventDefault();
 		displayGroup = $('#displayGroup');
 		inputField = `<div class="input-group form-group">
-		<input class="form-control" name="mobile_numbers[]">
+		<input required class="form-control" name="mobile_numbers[]">
 		<span class="input-group-btn">
 		<i style="padding: 0;" class="btn btn-danger">
 		<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span>
@@ -60,7 +60,7 @@
 		count = count + 1;
 
 		inputField = `<div class="form-group">
-		<div class="input-group"><input value="${number}" type="text" class="form-control" name="mobile_numbers[]">
+		<div class="input-group"><input required value="${number}" type="text" class="form-control" name="mobile_numbers[]">
 		<span class="input-group-btn">
 		<i style="padding: 0;" class="btn btn-danger">
 		<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span></i></span></div>
