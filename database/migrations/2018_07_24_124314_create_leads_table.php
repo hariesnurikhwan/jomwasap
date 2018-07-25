@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLeadCapturesTable extends Migration
+class CreateLeadsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateLeadCapturesTable extends Migration
      */
     public function up()
     {
-        Schema::create('lead_captures', function (Blueprint $table) {
+        Schema::create('leads', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('shortened_urls_id');
+            $table->unsignedInteger('shortened_url_id');
             $table->string('name');
             $table->string('mobile_number');
             $table->timestamps();
@@ -29,6 +29,6 @@ class CreateLeadCapturesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lead_captures');
+        Schema::dropIfExists('leads');
     }
 }
