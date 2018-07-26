@@ -50,11 +50,13 @@
                 <h4>Leads Captured</h4>
                 <table class="table">
                     <tr>
+                        <th>#</th>
                         <th>Name</th>
                         <th>Mobile Number</th>
                     </tr>
                     @foreach($url->lead as $lead)
                     <tr>
+                        <td>{{$loop->iteration}}</td>
                         <td>{{$lead->name}}</td>
                         <td>{{$lead->mobile_number}}</td>
                     </tr>
