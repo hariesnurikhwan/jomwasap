@@ -30,15 +30,6 @@
                     @endforeach
                     @endif
                     <dt>Lead Capture</dt>
-                    @if($url->enable_lead_capture)
-                    <dd>
-                        <button onclick="toggleLead()" class="btn btn-success btn-xs">Enabled</button>
-                    </dd>
-                    @else
-                    <dd>
-                        <button onclick="toggleLead()" class="btn btn-danger btn-xs">Disabled</button>
-                    </dd>
-                    @endif
                     @if($url->text)
                     <dt>Pretext Chat</dt>
                     <dd><pre>{{ $url->text }}</pre></dd>
@@ -66,20 +57,5 @@
         </div>
     </div>
 </div>
-
-<script>
-
-    function toggleLead() {
-        target = event.target;
-
-        axios.get('/api/lead/{!! $url->alias !!}').then(function (response){
-            if ($(target).text() == 'Disabled') {
-                $(target).removeClass('btn-danger').addClass('btn-success').text('Enabled');
-            } else {
-                $(target).removeClass('btn-success').addClass('btn-danger').text('Disabled');
-            }
-        })
-    }
-</script>
 
 @endsection
