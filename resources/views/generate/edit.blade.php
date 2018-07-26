@@ -15,6 +15,7 @@
 				mobile_number: '{{$url->mobile_number}}',
 				mobile_numbers: [],
 				inputs: [],
+				selected: '{{$url->enable_lead_capture}}',
 			},
 			methods: {
 				addField: function() {
@@ -77,6 +78,7 @@
 				this.inputs.push(mobile_number);
 				@endfor
 				@endif
+
 			}
 		})
 
@@ -94,7 +96,6 @@
 				<div class="panel-body">
 					{!! Form::open(['method' => 'POST', 'route' => ['generate.update', $url->hashid]]) !!}
 					{{ method_field('PUT') }}
-
 					<div class="form-group {{ $errors->has('alias') ? ' has-error' : '' }}">
 						<label for="alias">Short URL</label>
 						<div class="input-group">
@@ -104,9 +105,7 @@
 						<small class="text-danger">{{ $errors->first('alias') }}</small>
 						<p class="text-default">If left empty, system will automatically generate the alias.</p>
 					</div>
-
 					<input name="type" type="hidden" value="{{$url->type}}" style="display: none;">
-
 					<div v-if="type == 'single' ">
 						<div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : ''}}">
 							<label for="mobile_number">Mobile Number</label>
@@ -114,7 +113,6 @@
 							<small class="text-danger">{{$errors->first('mobile_number')}}</small>
 						</div>
 					</div>
-
 					<div v-if="type == 'group' ">
 						<div class="form-group">
 							<button id="addField" v-on:click.prevent="addField" class="btn btn-primary">
@@ -134,15 +132,22 @@
 								<small class="text-danger">@{{ input.error }}</small>
 							</div>
 						</div>
-						<div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
-							<label for="text">Pretext Chat</label>
-							<textarea cols="50" rows="10" name="text" class="form-control"></textarea>
-							<small class="text-danger">{{$errors->first('text')}}</small>
-						</div>
-						<div class="btn-group pull-right">
-							<input type="reset" value="Reset" class="btn btn-warning">
-							<input id="submit" type="submit" value="Generate" class="btn btn-success">
-						</div>
+					</div>
+					<div class="form-group{{ $errors->has('enable_lead') ? ' has-error' : '' }}">
+						<label for="enable_lead">Lead Capture</label>
+						<select v-model="selected" name="enable_lead_capture">
+							<option value="0">Disable</option>
+							<option value="1">Enable</option>
+						</select>
+					</div>
+					<div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
+						<label for="text">Pretext Chat</label>
+						<textarea cols="50" rows="10" name="text" class="form-control"></textarea>
+						<small class="text-danger">{{$errors->first('text')}}</small>
+					</div>
+					<div class="btn-group pull-right">
+						<input type="reset" value="Reset" class="btn btn-warning">
+						<input id="submit" type="submit" value="Generate" class="btn btn-success">
 					</div>
 				</div>
 			</div>

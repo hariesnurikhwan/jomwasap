@@ -15,6 +15,7 @@
 				mobile_number: '{{old('mobile_number')}}',
 				inputs: [],
 				mobile_numbers: [],
+				selected: '{{old('enable_lead_capture')}}',
 
 			},
 			methods: {
@@ -114,6 +115,13 @@
 							<input name="mobile_number" type="text" :value="mobile_number" class="form-control">
 							<small class="text-danger">{{$errors->first('mobile_number')}}</small>
 						</div>
+					</div>
+					<div class="form-group{{ $errors->has('enable_lead') ? ' has-error' : '' }}">
+						<label for="enable_lead">Lead Capture</label>
+						<select v-model="selected" name="enable_lead_capture">
+							<option value="0">Disable</option>
+							<option value="1">Enable</option>
+						</select>
 					</div>
 					<div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
 						<label for="text">Pretext Chat</label>

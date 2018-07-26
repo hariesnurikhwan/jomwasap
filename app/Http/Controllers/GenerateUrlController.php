@@ -54,38 +54,42 @@ class GenerateUrlController extends Controller
     {
 
         $this->validate($request, [
-            'type'             => [
+            'type'                => [
                 'required',
                 Rule::in(['single', 'group']),
                 'bail',
             ],
-            'alias'            => [
+            'alias'               => [
                 'sometimes',
                 Rule::unique('shortened_urls'),
             ],
-            'mobile_number'    => [
+            'mobile_number'       => [
                 'required_if:type,single',
                 'nullable',
                 'phone:MY',
             ],
-            'mobile_numbers'   => [
+            'mobile_numbers'      => [
                 'required_if:type,group',
                 'nullable',
                 'between:2,5',
             ],
-            'mobile_numbers.*' => 'distinct|phone:MY',
+            'mobile_numbers.*'    => 'distinct|phone:MY',
+            'enable_lead_capture' => [
+                'boolean',
+                'required',
+            ],
         ]);
 
         if ($request->type === 'single') {
 
             $url = Auth::user()->addURL(new ShortenedUrl(
-                $request->only(['alias', 'mobile_number', 'text', 'type'])
+                $request->only(['alias', 'mobile_number', 'text', 'type', 'enable_lead_capture'])
             ));
 
         } elseif ($request->type === 'group') {
 
             $url = Auth::user()->addURL(new ShortenedUrl(
-                $request->only(['alias', 'type', 'text'])
+                $request->only(['alias', 'type', 'text', 'enable_lead_capture'])
             ));
 
             foreach ($request->mobile_numbers as $number) {
@@ -161,25 +165,31 @@ class GenerateUrlController extends Controller
                 'distinct',
                 'phone:MY',
             ],
+            'enable_lead_capture'  => [
+                'boolean',
+                'required',
+            ],
         ]);
 
         if ($url->type === 'single') {
 
-            $url->update($request->only('alias', 'mobile_number', 'text'));
+            $url->update($request->only('alias', 'mobile_number', 'text', 'enable_lead_capture'));
 
         } elseif ($url->type === 'group') {
 
-            if ($request->mobile_numbers) {
-                $mobile_numbers = array_merge($request->mobile_numbers, $request->old_mobile_numbers);
-            } else {
-                $mobile_numbers = $request->old_mobile_numbers;
-            }
-
             $existingNumber = $url->group()->pluck('mobile_number')->toArray();
+
+            if ($request->mobile_numbers && $request->old_mobile_numbers) {
+                $mobile_numbers = array_merge($request->mobile_numbers, $request->old_mobile_numbers);
+            } elseif ($request->old_mobile_numbers) {
+                $mobile_numbers = $request->old_mobile_numbers;
+            } elseif ($request->mobile_numbers) {
+                $mobile_numbers = $request->mobile_numbers;
+            }
 
             $editedNumbers = array_diff($existingNumber, $mobile_numbers);
 
-            $url->update($request->only('alias', 'text'));
+            $url->update($request->only('alias', 'text', 'enable_lead_capture'));
 
             foreach ($mobile_numbers as $number) {
                 $url->group()->firstOrCreate(['mobile_number' => $number]);
