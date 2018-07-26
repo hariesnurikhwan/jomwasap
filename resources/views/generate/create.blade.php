@@ -96,6 +96,7 @@
 								<span class="glyphicon glyphicon-plus"></span>
 							</button>
 						</div>
+						<label>Mobile Numbers</label>
 						<div v-for="(input, index) in inputs">
 							<div class="form-group">
 								<div class="input-group">

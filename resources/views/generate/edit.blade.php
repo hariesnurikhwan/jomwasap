@@ -95,7 +95,7 @@
 						<label for="alias">Short URL</label>
 						<div class="input-group">
 							<span class="input-group-addon">https://hi.jomwasap.my/</span>
-							<input value={{$url->alias}} type="text" name="alias" class="form-control">
+							<input value={{old('alias') ? old('alias') : $url->alias}} type="text" name="alias" class="form-control">
 						</div>
 						<small class="text-danger">{{ $errors->first('alias') }}</small>
 						<p class="text-default">If left empty, system will automatically generate the alias.</p>
@@ -137,7 +137,7 @@
 					</div>
 					<div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
 						<label for="text">Pretext Chat</label>
-						<textarea cols="50" rows="10" name="text" class="form-control">{{$url->text}}</textarea>
+						<textarea cols="50" rows="10" name="text" class="form-control">{{old('text') ? old('text') : $url->text}}</textarea>
 						<small class="text-danger">{{$errors->first('text')}}</small>
 					</div>
 					<div class="btn-group pull-right">

@@ -29,6 +29,8 @@
                     <dd>{{phone($number, 'MY')}}</dd>
                     @endforeach
                     @endif
+                    <dt>Lead Capture</dt>
+                    <dd>{{$url->enable_lead_capture ? "Enabled" : "Disabled"}}</dd>
                     <dt>Pretext Chat</dt>
                     <dd><pre>{{ $url->text }}</pre></dd>
                 </dl>
