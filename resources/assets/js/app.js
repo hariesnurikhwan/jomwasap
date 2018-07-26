@@ -18,9 +18,9 @@ window.$ = window.jQuery = $;
 
 Vue.component('example', require('./components/Example.vue'));
 
-const app = new Vue({
-    el: '#app'
-});
+// const app = new Vue({
+//     el: '#app'
+// });
 
 const ClipboardJS = require('clipboard');
 var clipboard = new ClipboardJS('.btn');

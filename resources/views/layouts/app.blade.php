@@ -79,7 +79,6 @@
             </div>
         </nav>
     </div>
-    <script src="{{ mix('js/app.js') }}"></script>
     @yield('content')
     <div class="navbar navbar-default navbar-fixed-bottom">
         <div class="container">
@@ -89,5 +88,7 @@
         </div>
     </div>
     @include('partials.googleAnalytics')
+    <script src="{{ mix('js/app.js') }}"></script>
+    @stack('scripts')
 </body>
 </html>

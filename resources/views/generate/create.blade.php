@@ -1,14 +1,76 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+
+
+@push('scripts')
+<script>
+
+	let createUrl = new Vue({
+		el: '#createUrl',
+		data: {
+			type: '',
+			mobile_number: '{{old('mobile_number')}}',
+			inputs: [],
+			mobile_numbers: [],
+			selected: '{{old('enable_lead_capture')}}',
+
+		},
+		methods: {
+			addField: function() {
+				this.inputs.push({number: '', error: ''})
+			},
+
+			removeField: function(index) {
+				this.inputs.splice(index, 1);
+			}
+
+		},
+		updated: function() {
+			this.$nextTick(function() {
+				if (this.inputs.length >= 5) {
+					$('#addField').prop('disabled', true);
+				}
+
+				if (this.inputs.length < 5) {
+					$('#addField').prop('disabled', false);
+				}
+
+				if (this.inputs.length < 2) {
+					$('#submit').prop('disabled', true);
+				}
+
+				if (this.inputs.length > 1) {
+					$('#submit').prop('disabled', false);
+				}
+			})
+		},
+		mounted() {
+			this.type = '{{old('type')}}';
+			@if(old('mobile_numbers'))
+			@for($i = 0; $i < count(old('mobile_numbers')); $i++)
+			var mobile_number = {
+				number: '{!! old('mobile_numbers')[$i] !!}',
+				error: '{!! $errors->first('mobile_numbers.' . $i) !!}',
+			}
+			this.inputs.push(mobile_number);
+			@endfor
+			@endif
+
+		},
+
+	})
+
+</script>
+@endpush
+
+<div id="createUrl" v-cloak class="container">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
 				<div class="panel-heading">Generate Clickable WhatsApp Link.</div>
 				<div class="panel-body">
 					{!! Form::open(['method' => 'POST', 'route' => 'generate.store']) !!}
-
 					<div class="form-group{{ $errors->has('alias') ? ' has-error' : '' }}">
 						{!! Form::label('alias', 'Short URL') !!}
 						<div class="input-group">
@@ -18,127 +80,59 @@
 						<small class="text-danger">{{ $errors->first('alias') }}</small>
 						<p class="text-default">If left empty, system will automatically generate the alias.</p>
 					</div>
-
-
-					<select id="select-type" onchange="display()" name="type" class="form-control form-group">
+					<select v-model="type" name="type" class="form-control form-group">
 						<option>Select Type</option>
 						<option value="single">Single</option>
 						<option value="group">Group</option>
 					</select>
-
-					<div>
-						<div style="display: none" id="displayGroup">
-
+					<div v-if="type == 'group' " id="displayGroup">
+						<div class="form-group">
+							<button id="addField" v-on:click.prevent="addField" class="btn btn-primary">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+						</div>
+						<div v-for="(input, index) in inputs">
 							<div class="form-group">
-								<button id="addfield" class="btn btn-primary" onclick="addField()">
-									<span class="glyphicon glyphicon-plus"></span>
-								</button>
+								<div class="input-group">
+									<input :value="input.number" required name="mobile_numbers[]" class="form-control">
+									<div class="input-group-btn">
+										<button class="btn btn-danger" v-on:click.prevent="removeField(index)">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+									</div>
+								</div>
+								<small class="text-danger">@{{ input.error }}</small>
 							</div>
 							<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 						</div>
 					</div>
-
-					<div style="display: none" id="displaySingle">
-						<div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : '' }}">
-							{!! Form::label('mobile_number', 'Mobile Number *') !!}
-							{!! Form::text('mobile_number', null, ['class' => 'form-control']) !!}
-							<small class="text-danger">{{ $errors->first('mobile_number') }}</small>
-							<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
+					<div v-if="type == 'single' " id="displaySingle">
+						<div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : ''}}">
+							<label for="mobile_number">Mobile Number</label>
+							<input required name="mobile_number" type="text" :value="mobile_number" class="form-control">
+							<small class="text-danger">{{$errors->first('mobile_number')}}</small>
 						</div>
 					</div>
-
-
-
-
+					<div class="form-group{{ $errors->has('enable_lead') ? ' has-error' : '' }}">
+						<label for="enable_lead">Lead Capture</label>
+						<select v-model="selected" name="enable_lead_capture" class="form-control form-group">
+							<option value="0">Disable</option>
+							<option value="1">Enable</option>
+						</select>
+					</div>
 					<div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
-						{!! Form::label('text', 'Pretext Chat') !!}
-						{!! Form::textarea('text', null, ['class' => 'form-control']) !!}
-						<small class="text-danger">{{ $errors->first('text') }}</small>
+						<label for="text">Pretext Chat</label>
+						<textarea cols="50" rows="10" name="text" class="form-control"></textarea>
+						<small class="text-danger">{{$errors->first('text')}}</small>
 					</div>
-
 					<div class="btn-group pull-right">
-						{!! Form::reset("Reset", ['class' => 'btn btn-warning']) !!}
-						{!! Form::submit("Generate", ['class' => 'btn btn-success']) !!}
+						<input type="reset" value="Reset" class="btn btn-warning">
+						<input id="submit" type="submit" value="Generate" class="btn btn-success">
 					</div>
-
-					{!! Form::close() !!}
 				</div>
-
-				@if ($errors->any())
-				<div class="alert alert-danger">
-					<ul>
-						@foreach ($errors->all() as $error)
-						<li>{{ $error }}</li>
-						@endforeach
-					</ul>
-				</div>
-				@endif
 			</div>
 		</div>
 	</div>
 </div>
-
-<script>
-
-
-
-	var count = 0;
-
-
-	function display(){
-		type = event.target.value;
-		displaySingle = $('#displaySingle');
-		displayGroup = $('#displayGroup');
-		if(type === 'single'){
-			displayGroup.hide();
-			displaySingle.show();
-		} else if(type === 'group'){
-			displayGroup.show();
-			displaySingle.hide();
-		}
-	}
-
-	function addField(){
-
-		count = count + 1;
-
-		if (count == 5) {
-			$('#addfield').attr("disabled","disabled");
-		}
-
-		event.preventDefault();
-		displayGroup = $('#displayGroup');
-		inputField = `<div class="input-group form-group">
-		<input type="text" class="form-control" name="mobile_numbers[]">
-		<span class="input-group-btn">
-		<i style="padding: 0;" class="btn btn-danger">
-		<span style="padding: 10px;" onclick="removeField()" class="glyphicon glyphicon-remove"></span>
-		</i>
-		</span>
-		</div>
-		`
-
-		displayGroup.append(inputField);
-
-
-	}
-
-	function removeField(){
-		event.preventDefault();
-
-		count = count - 1;
-
-		$('#addfield').attr("disabled",false);
-
-
-		target = event.target
-
-		$(target).parent().parent().parent().remove();
-	}
-
-
-
-
-</script>
 
 @endsection
