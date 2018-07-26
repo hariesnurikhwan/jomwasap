@@ -6,87 +6,82 @@
 @push('scripts')
 
 <script>
-	$(window).on('load', function(){
-
-		let editUrl = new Vue({
-			el: '#editUrl',
-			data: {
-				type: '{{$url->type}}',
-				mobile_number: '{{$url->mobile_number}}',
-				mobile_numbers: [],
-				inputs: [],
-				selected: '{{$url->enable_lead_capture}}',
+	let editUrl = new Vue({
+		el: '#editUrl',
+		data: {
+			type: '{{$url->type}}',
+			mobile_number: '{{$url->mobile_number}}',
+			mobile_numbers: [],
+			inputs: [],
+			selected: '{{$url->enable_lead_capture}}',
+		},
+		methods: {
+			addField: function() {
+				this.inputs.push({number: '', error: ''})
 			},
-			methods: {
-				addField: function() {
-					this.inputs.push({number: '', error: ''})
-				},
 
-				removeField: function(index) {
-					this.inputs.splice(index, 1);
-				}
-			},
-			updated: function() {
-				this.$nextTick(function() {
-					if (this.inputs.length >= 5) {
-						$('#addField').prop('disabled', true);
-					}
-
-					if (this.inputs.length < 5) {
-						$('#addField').prop('disabled', false);
-					}
-
-					if (this.inputs.length < 2) {
-						$('#submit').prop('disabled', true);
-					}
-
-					if (this.inputs.length > 1) {
-						$('#submit').prop('disabled', false);
-					}
-				})
-			},
-			mounted: function() {
-
-				@if(old('old_mobile_numbers'))
-				@for($i = 0; $i < count(old('old_mobile_numbers')); $i++)
-
-				var mobile_number = {
-					number: '{!! old('old_mobile_numbers')[$i] !!}',
-					error: '{!! $errors->first('old_mobile_numbers.' . $i) !!}',
-					type: 'old_mobile_numbers[]'
-				}
-
-				this.inputs.push(mobile_number);
-				@endfor
-				@else
-				@for($i = 0; $i < count($numbers = $url->group->pluck('mobile_number')->toArray()); $i++)
-				var mobile_number = {
-					number: '{{$numbers[$i]}}',
-					error: '',
-					type: 'old_mobile_numbers[]'
-				}
-				this.inputs.push(mobile_number)
-				@endfor
-				@endif
-				@if(old('mobile_numbers'))
-				@for($i = 0; $i < count(old('mobile_numbers')); $i++)
-				var mobile_number = {
-					number: '{!! old('mobile_numbers')[$i] !!}',
-					error: '{!! $errors->first('mobile_numbers.' . $i) !!}',
-					type: 'mobile_numbers[]'
-				}
-				this.inputs.push(mobile_number);
-				@endfor
-				@endif
-
+			removeField: function(index) {
+				this.inputs.splice(index, 1);
 			}
-		})
+		},
+		updated: function() {
+			this.$nextTick(function() {
+				if (this.inputs.length >= 5) {
+					$('#addField').prop('disabled', true);
+				}
 
+				if (this.inputs.length < 5) {
+					$('#addField').prop('disabled', false);
+				}
+
+				if (this.inputs.length < 2) {
+					$('#submit').prop('disabled', true);
+				}
+
+				if (this.inputs.length > 1) {
+					$('#submit').prop('disabled', false);
+				}
+			})
+		},
+		mounted: function() {
+
+			@if(old('old_mobile_numbers'))
+			@for($i = 0; $i < count(old('old_mobile_numbers')); $i++)
+
+			var mobile_number = {
+				number: '{!! old('old_mobile_numbers')[$i] !!}',
+				error: '{!! $errors->first('old_mobile_numbers.' . $i) !!}',
+				type: 'old_mobile_numbers[]'
+			}
+
+			this.inputs.push(mobile_number);
+			@endfor
+			@else
+			@for($i = 0; $i < count($numbers = $url->group->pluck('mobile_number')->toArray()); $i++)
+			var mobile_number = {
+				number: '{{$numbers[$i]}}',
+				error: '',
+				type: 'old_mobile_numbers[]'
+			}
+			this.inputs.push(mobile_number)
+			@endfor
+			@endif
+			@if(old('mobile_numbers'))
+			@for($i = 0; $i < count(old('mobile_numbers')); $i++)
+			var mobile_number = {
+				number: '{!! old('mobile_numbers')[$i] !!}',
+				error: '{!! $errors->first('mobile_numbers.' . $i) !!}',
+				type: 'mobile_numbers[]'
+			}
+			this.inputs.push(mobile_number);
+			@endfor
+			@endif
+		}
 	})
 </script>
 @endpush
 
-<div id="editUrl" class="container">
+<div class="container" v-cloak id="editUrl">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
@@ -135,7 +130,7 @@
 					</div>
 					<div class="form-group{{ $errors->has('enable_lead') ? ' has-error' : '' }}">
 						<label for="enable_lead">Lead Capture</label>
-						<select v-model="selected" name="enable_lead_capture">
+						<select v-model="selected" name="enable_lead_capture" class="form-control form-group">
 							<option value="0">Disable</option>
 							<option value="1">Enable</option>
 						</select>
