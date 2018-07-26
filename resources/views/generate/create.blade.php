@@ -34,8 +34,8 @@
 									<span class="glyphicon glyphicon-plus"></span>
 								</button>
 							</div>
+							<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 						</div>
-						<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 					</div>
 
 					<div style="display: none" id="displaySingle">

@@ -10,6 +10,7 @@ class VisitUrlController extends Controller
 {
     public function go($alias)
     {
+
         $url = ShortenedUrl::whereAlias($alias)->firstOrFail();
 
         $text = rawurlencode($url->text);
@@ -36,4 +37,5 @@ class VisitUrlController extends Controller
             'os'          => $agent->platform(),
         ]);
     }
+
 }

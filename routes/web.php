@@ -20,7 +20,9 @@ Auth::routes();
 Route::resource('generate', 'GenerateUrlController', ['parameters' => ['generate' => 'url'], 'middleware' => 'auth']);
 
 Route::group(['domain' => 'hi.jomwasap.my'], function () {
-    Route::get('{alias}', 'VisitUrlController@go');
+    Route::get('{alias}', 'VisitUrlController@go')->middleware('CheckLeadCapture');
 });
 
-Route::get('/go/{alias}', 'VisitUrlController@go');
+Route::get('/go/{alias}', 'VisitUrlController@go')->middleware('CheckLeadCapture');
+
+Route::post('/lead', 'LeadController@store')->name('lead');
