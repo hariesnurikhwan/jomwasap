@@ -11354,9 +11354,9 @@ window.$ = window.jQuery = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a;
 
 Vue.component('example', __webpack_require__(37));
 
-var app = new Vue({
-  el: '#app'
-});
+// const app = new Vue({
+//     el: '#app'
+// });
 
 var ClipboardJS = __webpack_require__(33);
 var clipboard = new ClipboardJS('.btn');
