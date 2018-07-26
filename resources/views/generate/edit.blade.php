@@ -130,14 +130,14 @@
 					</div>
 					<div class="form-group{{ $errors->has('enable_lead') ? ' has-error' : '' }}">
 						<label for="enable_lead">Lead Capture</label>
-						<select v-model="selected" name="enable_lead_capture" class="form-control form-group">
-							<option value="0">Disable</option>
-							<option value="1">Enable</option>
+						<select name="enable_lead_capture" class="form-control form-group">
+							<option value="1" {{$url->enable_lead_capture == "1" ? "selected":""}}>Enable</option>
+							<option value="0" {{$url->enable_lead_capture == "0" ? "selected":""}}>Disable</option>
 						</select>
 					</div>
 					<div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
 						<label for="text">Pretext Chat</label>
-						<textarea cols="50" rows="10" name="text" class="form-control"></textarea>
+						<textarea cols="50" rows="10" name="text" class="form-control">{{$url->text}}</textarea>
 						<small class="text-danger">{{$errors->first('text')}}</small>
 					</div>
 					<div class="btn-group pull-right">
