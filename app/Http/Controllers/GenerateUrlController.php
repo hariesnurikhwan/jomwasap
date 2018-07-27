@@ -161,9 +161,6 @@ class GenerateUrlController extends Controller
                 'distinct',
                 'phone:MY',
             ],
-            'mobile_numbers'       => [
-                'between:2,5',
-            ],
             'mobile_numbers.*'     => [
                 'distinct',
                 'phone:MY',
