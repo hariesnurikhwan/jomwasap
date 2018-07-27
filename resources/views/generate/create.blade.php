@@ -9,11 +9,10 @@
 	let createUrl = new Vue({
 		el: '#createUrl',
 		data: {
-			type: '',
+			type: '{{old('type')}}' || 'Select Type',
 			mobile_number: '{{old('mobile_number')}}',
 			inputs: [],
 			mobile_numbers: [],
-			selected: '{{old('enable_lead_capture')}}',
 
 		},
 		methods: {
@@ -43,18 +42,24 @@
 				if (this.inputs.length > 1) {
 					$('#submit').prop('disabled', false);
 				}
+
+				if (this.type == 'single') {
+					$('#submit').prop('disabled', false);
+				}
 			})
 		},
 		mounted() {
-			this.type = '{{old('type')}}';
 			@if(old('mobile_numbers'))
 			@for($i = 0; $i < count(old('mobile_numbers')); $i++)
 			var mobile_number = {
-				number: '{!! old('mobile_numbers')[$i] !!}',
-				error: '{!! $errors->first('mobile_numbers.' . $i) !!}',
+				number: '{{old('mobile_numbers')[$i]}}',
+				error: '{{ $errors->first('mobile_numbers.' . $i) }}',
 			}
 			this.inputs.push(mobile_number);
 			@endfor
+			@else
+			this.inputs.push({number: '', error: ''})
+			this.inputs.push({number: '', error: ''})
 			@endif
 
 		},
@@ -81,7 +86,7 @@
 						<p class="text-default">If left empty, system will automatically generate the alias.</p>
 					</div>
 					<select v-model="type" name="type" class="form-control form-group">
-						<option>Select Type</option>
+						<option >Select Type</option>
 						<option value="single">Single</option>
 						<option value="group">Group</option>
 					</select>
@@ -91,6 +96,7 @@
 								<span class="glyphicon glyphicon-plus"></span>
 							</button>
 						</div>
+						<label>Mobile Numbers</label>
 						<div v-for="(input, index) in inputs">
 							<div class="form-group">
 								<div class="input-group">
@@ -105,6 +111,7 @@
 							</div>
 							<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 						</div>
+						<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 					</div>
 					<div v-if="type == 'single' " id="displaySingle">
 						<div class="form-group{{ $errors->has('mobile_number') ? ' has-error' : ''}}">
@@ -112,17 +119,21 @@
 							<input required name="mobile_number" type="text" :value="mobile_number" class="form-control">
 							<small class="text-danger">{{$errors->first('mobile_number')}}</small>
 						</div>
+						<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
+
 					</div>
 					<div class="form-group{{ $errors->has('enable_lead') ? ' has-error' : '' }}">
 						<label for="enable_lead">Lead Capture</label>
-						<select v-model="selected" name="enable_lead_capture" class="form-control form-group">
-							<option value="0">Disable</option>
-							<option value="1">Enable</option>
+						<select name="enable_lead_capture" class="form-control form-group">
+							<option {{!old('enable_lead_capture') ? "selected":""}}>Select one</option>
+							<option value="1" {{old("enable_lead_capture") == "1" ? "selected":""}}>Enable</option>
+							<option value="0" {{old("enable_lead_capture") == "0" ? "selected":""}}>Disable</option>
 						</select>
+						<small class="text-danger">{{$errors->first('enable_lead_capture')}}</small>
 					</div>
 					<div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
 						<label for="text">Pretext Chat</label>
-						<textarea cols="50" rows="10" name="text" class="form-control"></textarea>
+						<textarea cols="50" rows="10" name="text" class="form-control">{{old('text')}}</textarea>
 						<small class="text-danger">{{$errors->first('text')}}</small>
 					</div>
 					<div class="btn-group pull-right">

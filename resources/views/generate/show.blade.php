@@ -30,6 +30,7 @@
                     @endforeach
                     @endif
                     <dt>Lead Capture</dt>
+                    <dd>{{$url->enable_lead_capture ? "Enabled" : "Disabled"}}</dd>
                     @if($url->text)
                     <dt>Pretext Chat</dt>
                     <dd><pre>{{ $url->text }}</pre></dd>
