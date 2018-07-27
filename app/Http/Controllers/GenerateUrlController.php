@@ -79,9 +79,9 @@ class GenerateUrlController extends Controller
                 'boolean',
                 'required',
             ],
-            'title'               => 'required_with:description,image',
-            'description'         => 'required_with:title, image',
-            'image'               => 'required_with:title,description',
+            'title'               => 'required_with:description',
+            'description'         => 'required_with:title',
+            'image'               => 'required_with:title,description|image',
         ]);
 
         if ($request->file('image')) {
@@ -194,6 +194,7 @@ class GenerateUrlController extends Controller
             ],
             'title'                => 'required_with:description',
             'description'          => 'required_with:title',
+            'image'                => 'image',
         ]);
 
         if (isset($request->title)) {

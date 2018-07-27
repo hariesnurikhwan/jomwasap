@@ -14,8 +14,6 @@
 			mobile_numbers: [],
 			inputs: [],
 			selected: '{{old('enable_lead_capture') ? old('enable_lead_capture') : $url->enable_lead_capture}}',
-			main: false,
-			optional: false
 		},
 		methods: {
 			addField: function() {
@@ -91,7 +89,8 @@
 			@endif
 
 			$('#mainNav').addClass('active');
-			this.main = true;
+			$('#mainTab').addClass('active');
+
 		}
 	})
 </script>

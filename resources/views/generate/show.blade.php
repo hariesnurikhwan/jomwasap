@@ -10,7 +10,6 @@
                     <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-success btn-xs pull-right">Edit Link</a>
                 </div>
                 <div class="panel-body">
-                    <img src="{{asset('images/og/' . $url->image)}}">
                     <dl class="dl-horizontal">
                         <dt>URL</dt>
                         <dd>
