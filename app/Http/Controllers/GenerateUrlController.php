@@ -143,29 +143,29 @@ class GenerateUrlController extends Controller
     {
 
         $this->validate($request, [
-            'type'                 => [
+            'type'                => [
                 'required',
                 Rule::in(['single', 'group']),
                 'bail',
             ],
-            'alias'                => [
+            'alias'               => [
                 'required',
                 Rule::unique('shortened_urls')->ignore($url->id),
             ],
-            'text'                 => 'sometimes|max:5000',
-            'mobile_number'        => [
+            'text'                => 'sometimes|max:5000',
+            'mobile_number'       => [
                 'required_if:type,single',
                 'phone:MY',
             ],
-            'old_mobile_numbers.*' => [
+            'mobile_numbers'      => [
+                'required_if:type,group',
+                'between:2,5',
+            ],
+            'mobile_numbers.*'    => [
                 'distinct',
                 'phone:MY',
             ],
-            'mobile_numbers.*'     => [
-                'distinct',
-                'phone:MY',
-            ],
-            'enable_lead_capture'  => [
+            'enable_lead_capture' => [
                 'boolean',
                 'required',
             ],
@@ -181,13 +181,7 @@ class GenerateUrlController extends Controller
 
                 $existingNumber = $url->group()->pluck('mobile_number')->toArray();
 
-                if ($request->mobile_numbers && $request->old_mobile_numbers) {
-                    $mobile_numbers = array_merge($request->mobile_numbers, $request->old_mobile_numbers);
-                } elseif ($request->old_mobile_numbers) {
-                    $mobile_numbers = $request->old_mobile_numbers;
-                } elseif ($request->mobile_numbers) {
-                    $mobile_numbers = $request->mobile_numbers;
-                }
+                $mobile_numbers = $request->mobile_numbers;
 
                 $editedNumbers = array_diff($existingNumber, $mobile_numbers);
 
