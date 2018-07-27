@@ -6,6 +6,7 @@ use App\Group;
 use App\ShortenedUrl;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class GenerateUrlController extends Controller
@@ -80,25 +81,27 @@ class GenerateUrlController extends Controller
             ],
         ]);
 
-        if ($request->type === 'single') {
+        DB::transaction(function () use ($request) {
+            if ($request->type === 'single') {
 
-            $url = Auth::user()->addURL(new ShortenedUrl(
-                $request->only(['alias', 'mobile_number', 'text', 'type', 'enable_lead_capture'])
-            ));
+                $url = Auth::user()->addURL(new ShortenedUrl(
+                    $request->only(['alias', 'mobile_number', 'text', 'type', 'enable_lead_capture'])
+                ));
 
-        } elseif ($request->type === 'group') {
+            } elseif ($request->type === 'group') {
 
-            $url = Auth::user()->addURL(new ShortenedUrl(
-                $request->only(['alias', 'type', 'text', 'enable_lead_capture'])
-            ));
+                $url = Auth::user()->addURL(new ShortenedUrl(
+                    $request->only(['alias', 'type', 'text', 'enable_lead_capture'])
+                ));
 
-            foreach ($request->mobile_numbers as $number) {
-                $url->group()->create([
-                    'mobile_number' => $number,
-                ]);
+                foreach ($request->mobile_numbers as $number) {
+                    $url->group()->create([
+                        'mobile_number' => $number,
+                    ]);
+                }
+
             }
-
-        }
+        });
 
         return redirect()->route('generate.show', $url->hashid);
     }
@@ -171,35 +174,37 @@ class GenerateUrlController extends Controller
             ],
         ]);
 
-        if ($url->type === 'single') {
+        DB::transaction(function () use ($request, $url) {
 
-            $url->update($request->only('alias', 'mobile_number', 'text', 'enable_lead_capture'));
+            if ($url->type === 'single') {
 
-        } elseif ($url->type === 'group') {
+                $url->update($request->only('alias', 'mobile_number', 'text', 'enable_lead_capture'));
 
-            $existingNumber = $url->group()->pluck('mobile_number')->toArray();
+            } elseif ($url->type === 'group') {
 
-            if ($request->mobile_numbers && $request->old_mobile_numbers) {
-                $mobile_numbers = array_merge($request->mobile_numbers, $request->old_mobile_numbers);
-            } elseif ($request->old_mobile_numbers) {
-                $mobile_numbers = $request->old_mobile_numbers;
-            } elseif ($request->mobile_numbers) {
-                $mobile_numbers = $request->mobile_numbers;
+                $existingNumber = $url->group()->pluck('mobile_number')->toArray();
+
+                if ($request->mobile_numbers && $request->old_mobile_numbers) {
+                    $mobile_numbers = array_merge($request->mobile_numbers, $request->old_mobile_numbers);
+                } elseif ($request->old_mobile_numbers) {
+                    $mobile_numbers = $request->old_mobile_numbers;
+                } elseif ($request->mobile_numbers) {
+                    $mobile_numbers = $request->mobile_numbers;
+                }
+
+                $editedNumbers = array_diff($existingNumber, $mobile_numbers);
+
+                $url->update($request->only('alias', 'text', 'enable_lead_capture'));
+
+                foreach ($mobile_numbers as $number) {
+                    $url->group()->firstOrCreate(['mobile_number' => $number]);
+                }
+
+                foreach ($editedNumbers as $number) {
+                    $url->group()->where('mobile_number', $number)->delete();
+                }
             }
-
-            $editedNumbers = array_diff($existingNumber, $mobile_numbers);
-
-            $url->update($request->only('alias', 'text', 'enable_lead_capture'));
-
-            foreach ($mobile_numbers as $number) {
-                $url->group()->firstOrCreate(['mobile_number' => $number]);
-            }
-
-            foreach ($editedNumbers as $number) {
-                $url->group()->where('mobile_number', $number)->delete();
-            }
-
-        }
+        });
 
         return redirect()->route('generate.show', $url->hashid);
     }

@@ -109,6 +109,7 @@
 								</div>
 								<small class="text-danger">@{{ input.error }}</small>
 							</div>
+							<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 						</div>
 						<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 					</div>
