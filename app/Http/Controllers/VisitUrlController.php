@@ -31,6 +31,7 @@ class VisitUrlController extends Controller
         }
 
         return view('redirector', [
+            'url'         => $url,
             'redirectApp' => $redirectApp,
             'redirectWeb' => $redirectWeb,
             'os'          => $agent->platform(),

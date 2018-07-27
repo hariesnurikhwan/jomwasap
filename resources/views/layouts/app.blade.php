@@ -15,7 +15,13 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/align.css') }}" rel="stylesheet">
 
+
+    @isset($url)
+    @include('partials.customFacebookMeta')
+    @else
     @include('partials.facebookMeta')
+    @endisset
+
     <!-- Scripts -->
 
     <script>

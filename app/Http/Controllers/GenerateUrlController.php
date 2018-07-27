@@ -6,6 +6,7 @@ use App\Group;
 use App\ShortenedUrl;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class GenerateUrlController extends Controller
@@ -80,16 +81,32 @@ class GenerateUrlController extends Controller
             ],
         ]);
 
+        if ($request->file('image')) {
+
+            $pathName = $request->alias . '.' . $request->image->getClientOriginalExtension();
+            $request->image->move(public_path('images/og'), $pathName);
+
+        }
+
         if ($request->type === 'single') {
 
-            $url = Auth::user()->addURL(new ShortenedUrl(
-                $request->only(['alias', 'mobile_number', 'text', 'type', 'enable_lead_capture'])
-            ));
+            $url = Auth::user()->addUrl(new ShortenedUrl([
+                'alias'               => $request->alias,
+                'mobile_number'       => $request->mobile_number,
+                'text'                => $request->text,
+                'type'                => $request->type,
+                'enable_lead_capture' => $request->enable_lead_capture,
+                'title'               => $request->title,
+                'description'         => $request->description,
+                'image'               => $pathName,
+            ]));
+
+            dd($url);
 
         } elseif ($request->type === 'group') {
 
             $url = Auth::user()->addURL(new ShortenedUrl(
-                $request->only(['alias', 'type', 'text', 'enable_lead_capture'])
+                $request->only(['alias', 'type', 'text', 'enable_lead_capture', 'title', 'description'])
             ));
 
             foreach ($request->mobile_numbers as $number) {
