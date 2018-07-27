@@ -79,6 +79,9 @@ class GenerateUrlController extends Controller
                 'boolean',
                 'required',
             ],
+            'title'               => 'required_with:description,image',
+            'description'         => 'required_with:title, image',
+            'image'               => 'required_with:title,description',
         ]);
 
         if ($request->file('image')) {
@@ -105,9 +108,15 @@ class GenerateUrlController extends Controller
 
         } elseif ($request->type === 'group') {
 
-            $url = Auth::user()->addURL(new ShortenedUrl(
-                $request->only(['alias', 'type', 'text', 'enable_lead_capture', 'title', 'description'])
-            ));
+            $url = Auth::user()->addUrl(new ShortenedUrl([
+                'alias'               => $request->alias,
+                'text'                => $request->text,
+                'type'                => $request->type,
+                'enable_lead_capture' => $request->enable_lead_capture,
+                'title'               => $request->title,
+                'description'         => $request->description,
+                'image'               => $pathName,
+            ]));
 
             foreach ($request->mobile_numbers as $number) {
                 $url->group()->create([
@@ -175,9 +184,6 @@ class GenerateUrlController extends Controller
                 'distinct',
                 'phone:MY',
             ],
-            'mobile_numbers'       => [
-                'between:2,5',
-            ],
             'mobile_numbers.*'     => [
                 'distinct',
                 'phone:MY',
@@ -186,27 +192,63 @@ class GenerateUrlController extends Controller
                 'boolean',
                 'required',
             ],
+            'title'                => 'required_with:description',
+            'description'          => 'required_with:title',
         ]);
+
+        if (isset($request->title)) {
+            $pathName = $request->alias . '.' . $request->image->getClientOriginalExtension();
+            $request->image->move(public_path('images/og'), $pathName);
+        }
 
         if ($url->type === 'single') {
 
-            $url->update($request->only('alias', 'mobile_number', 'text', 'enable_lead_capture'));
+            if (isset($request->title)) {
+                $url->update([
+                    'alias'               => $request->alias,
+                    'mobile_number'       => $request->mobile_number,
+                    'text'                => $request->text,
+                    'type'                => $request->type,
+                    'enable_lead_capture' => $request->enable_lead_capture,
+                    'title'               => $request->title,
+                    'description'         => $request->description,
+                    'image'               => $pathName,
+                ]);
+            } else {
+                $url->update([
+                    'alias'         => $request->alias,
+                    'mobile_number' => $request->mobile_number,
+                    'text'          => $request->text,
+                    'type'          => $request->type,
+                ]);
+            }
 
         } elseif ($url->type === 'group') {
 
             $existingNumber = $url->group()->pluck('mobile_number')->toArray();
 
-            if ($request->mobile_numbers && $request->old_mobile_numbers) {
-                $mobile_numbers = array_merge($request->mobile_numbers, $request->old_mobile_numbers);
-            } elseif ($request->old_mobile_numbers) {
-                $mobile_numbers = $request->old_mobile_numbers;
-            } elseif ($request->mobile_numbers) {
-                $mobile_numbers = $request->mobile_numbers;
-            }
+            $mobile_numbers = $request->mobile_numbers;
 
             $editedNumbers = array_diff($existingNumber, $mobile_numbers);
 
-            $url->update($request->only('alias', 'text', 'enable_lead_capture'));
+            if (isset($request->title)) {
+                $url->update([
+                    'alias'               => $request->alias,
+                    'text'                => $request->text,
+                    'type'                => $request->type,
+                    'enable_lead_capture' => $request->enable_lead_capture,
+                    'title'               => $request->title,
+                    'description'         => $request->description,
+                    'image'               => $pathName,
+                ]);
+            } else {
+                $url->update([
+                    'alias'         => $request->alias,
+                    'mobile_number' => $request->mobile_number,
+                    'text'          => $request->text,
+                    'type'          => $request->type,
+                ]);
+            }
 
             foreach ($mobile_numbers as $number) {
                 $url->group()->firstOrCreate(['mobile_number' => $number]);

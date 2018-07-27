@@ -27,4 +27,15 @@ class ShortenedUrl extends Model
     {
         return $this->hasMany(Group::class, 'shortened_urls_id');
     }
+
+    public function lead()
+    {
+        return $this->hasMany(Lead::class);
+    }
+
+    public function switchLeadCapture()
+    {
+        $this->enable_lead_capture = !$this->enable_lead_capture;
+        $this->save();
+    }
 }
