@@ -45,37 +45,26 @@
 		},
 		mounted: function() {
 
-			@if(old('old_mobile_numbers'))
-			@for($i = 0; $i < count(old('old_mobile_numbers')); $i++)
-
-			var mobile_number = {
-				number: '{!! old('old_mobile_numbers')[$i] !!}',
-				error: '{!! $errors->first('old_mobile_numbers.' . $i) !!}',
-				type: 'old_mobile_numbers[]'
-			}
-
-			this.inputs.push(mobile_number);
+			@if(old('mobile_numbers'))
+			@for($i = 0; $i < count(old('mobile_numbers')); $i++)
+			this.inputs.push({
+				number: '{!! old('mobile_numbers')[$i] !!}',
+				error: '{!! $errors->first('mobile_numbers.' . $i) !!}',
+				type: 'mobile_numbers[]'
+			});
 			@endfor
 			@else
 			@for($i = 0; $i < count($numbers = $url->group->pluck('mobile_number')->toArray()); $i++)
 			var mobile_number = {
 				number: '{{$numbers[$i]}}',
 				error: '',
-				type: 'old_mobile_numbers[]'
+				type: 'mobile_numbers[]'
 			}
 			this.inputs.push(mobile_number)
 			@endfor
 			@endif
-			@if(old('mobile_numbers'))
-			@for($i = 0; $i < count(old('mobile_numbers')); $i++)
-			var mobile_number = {
-				number: '{!! old('mobile_numbers')[$i] !!}',
-				error: '{!! $errors->first('mobile_numbers.' . $i) !!}',
-				type: 'mobile_numbers[]'
-			}
-			this.inputs.push(mobile_number);
-			@endfor
-			@endif
+
+
 		}
 	})
 </script>
