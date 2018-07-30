@@ -48,7 +48,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                 @else
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('generate.index') }}">My Links</a>
+                    <a class="nav-link {{ Request::path() == 'generate' ? 'active' : '' }}" href="{{ route('generate.index') }}">My Links</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown">
