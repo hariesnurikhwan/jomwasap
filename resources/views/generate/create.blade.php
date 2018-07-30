@@ -12,7 +12,6 @@
 			mobile_number: '{{old('mobile_number')}}',
 			inputs: [],
 			mobile_numbers: [],
-			main: false,
 			optional: false
 
 		},
@@ -87,7 +86,7 @@
 			@endif
 
 			$('#mainNav').addClass('active');
-			this.main = true;
+			$('#mainTab').addClass('active');
 
 
 		},
