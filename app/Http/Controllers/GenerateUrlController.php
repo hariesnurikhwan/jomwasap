@@ -85,23 +85,33 @@ class GenerateUrlController extends Controller
             'image'               => 'required_with:title,description|image',
         ]);
 
-        DB::transaction(function () use ($request) {
-            if ($request->file('image')) {
+        $url = DB::transaction(function () use ($request) {
+            if (isset($request->image)) {
                 $pathName = $request->alias . '.' . $request->image->getClientOriginalExtension();
                 $request->image->move(public_path('images/og'), $pathName);
             }
 
             if ($request->type === 'single') {
-                $url = Auth::user()->addUrl(new ShortenedUrl([
-                    'alias'               => $request->alias,
-                    'mobile_number'       => $request->mobile_number,
-                    'text'                => $request->text,
-                    'type'                => $request->type,
-                    'enable_lead_capture' => $request->enable_lead_capture,
-                    'title'               => $request->title,
-                    'description'         => $request->description,
-                    'image'               => $pathName,
-                ]));
+                if (isset($request->title)) {
+                    $url = Auth::user()->addUrl(new ShortenedUrl([
+                        'alias'               => $request->alias,
+                        'mobile_number'       => $request->mobile_number,
+                        'text'                => $request->text,
+                        'type'                => $request->type,
+                        'enable_lead_capture' => $request->enable_lead_capture,
+                        'title'               => $request->title,
+                        'description'         => $request->description,
+                        'image'               => $pathName,
+                    ]));
+                } else {
+                    $url = Auth::user()->addUrl(new ShortenedUrl([
+                        'alias'               => $request->alias,
+                        'mobile_number'       => $request->mobile_number,
+                        'text'                => $request->text,
+                        'type'                => $request->type,
+                        'enable_lead_capture' => $request->enable_lead_capture,
+                    ]));
+                }
             } elseif ($request->type === 'group') {
                 if (isset($request->title)) {
                     $url = Auth::user()->addUrl(new ShortenedUrl([
@@ -121,16 +131,16 @@ class GenerateUrlController extends Controller
                         'enable_lead_capture' => $request->enable_lead_capture,
                     ]));
                 }
-
                 foreach ($request->mobile_numbers as $number) {
                     $url->group()->create([
                         'mobile_number' => $number,
                     ]);
                 }
             }
+            return $url;
         });
-
         return redirect()->route('generate.show', $url->hashid);
+
     }
 
     /**
@@ -198,10 +208,10 @@ class GenerateUrlController extends Controller
             ],
             'title'               => 'required_with:description',
             'description'         => 'required_with:title',
-            'image'               => 'required_with:title|description|image',
+            'image'               => 'required_with:title,description|image',
         ]);
 
-        DB::transaction(function () use ($request) {
+        $url = DB::transaction(function () use ($request, $url) {
             if (isset($request->title)) {
                 $pathName = $request->alias . '.' . $request->image->getClientOriginalExtension();
                 $request->image->move(public_path('images/og'), $pathName);
@@ -260,6 +270,7 @@ class GenerateUrlController extends Controller
                     $url->group()->where('mobile_number', $number)->delete();
                 }
             }
+            return $url;
         });
 
         return redirect()->route('generate.show', $url->hashid);
