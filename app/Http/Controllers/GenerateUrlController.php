@@ -172,7 +172,7 @@ class GenerateUrlController extends Controller
             ],
         ]);
 
-        DB::transaction(function () use ($request, $url) {
+        $url = DB::transaction(function () use ($request, $url) {
 
             if ($url->type === 'single') {
 
@@ -196,6 +196,8 @@ class GenerateUrlController extends Controller
                     $url->group()->where('mobile_number', $number)->delete();
                 }
             }
+
+            return $url;
         });
 
         return redirect()->route('generate.show', $url->hashid);
