@@ -173,6 +173,7 @@
 								<textarea cols="50" rows="10" name="text" class="form-control">{{old('text')}}</textarea>
 								<small class="text-danger">{{$errors->first('text')}}</small>
 							</div>
+							<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 						</div>
 						<div role="tabpanel" class="tab-pane" id="fbmetaTab">
 							<div class="form-group">

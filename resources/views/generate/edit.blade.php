@@ -69,13 +69,11 @@
 
 			@if(old('mobile_numbers'))
 			@for($i = 0; $i < count(old('mobile_numbers')); $i++)
-			var mobile_number = {
+			this.inputs.push({
 				number: '{!! old('mobile_numbers')[$i] !!}',
 				error: '{!! $errors->first('mobile_numbers.' . $i) !!}',
 				type: 'mobile_numbers[]'
-			}
-
-			this.inputs.push(mobile_number);
+			});
 			@endfor
 			@else
 			@for($i = 0; $i < count($numbers = $url->group->pluck('mobile_number')->toArray()); $i++)
