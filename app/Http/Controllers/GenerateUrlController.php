@@ -81,7 +81,7 @@ class GenerateUrlController extends Controller
             ],
         ]);
 
-        DB::transaction(function () use ($request) {
+        $url = DB::transaction(function () use ($request) {
             if ($request->type === 'single') {
 
                 $url = Auth::user()->addURL(new ShortenedUrl(
@@ -99,8 +99,9 @@ class GenerateUrlController extends Controller
                         'mobile_number' => $number,
                     ]);
                 }
-
             }
+
+            return $url;
         });
 
         return redirect()->route('generate.show', $url->hashid);
