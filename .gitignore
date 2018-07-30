@@ -9,3 +9,7 @@ Homestead.yaml
 .env
 .gitignore
 .DS_STORE
+
+/public/images
+/public/css
+/public/js

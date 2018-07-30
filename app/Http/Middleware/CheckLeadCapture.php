@@ -23,7 +23,7 @@ class CheckLeadCapture
 
         if ($url->enable_lead_capture) {
             if (!Cookie::get($alias)) {
-                return response()->view('lead', ['alias' => $alias]);
+                return response()->view('lead', ['alias' => $alias, 'url' => $url]);
             }
         }
 
