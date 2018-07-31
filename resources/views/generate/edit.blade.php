@@ -150,7 +150,7 @@
 									<div v-for="(input, index) in inputs">
 										<div class="form-group">
 											<div class="input-group">
-												<input :value="input.number" required name="mobile_numbers" class="form-control">
+												<input :value="input.number" required name="mobile_numbers[]" class="form-control">
 												<div class="input-group-btn">
 													<button class="btn btn-danger" v-on:click.prevent="removeField(index)">
 														<span class="fa fa-times"></span>

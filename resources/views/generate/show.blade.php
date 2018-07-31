@@ -57,10 +57,16 @@
                         <dt class="col-3">Mobile Number</dt>
                         <dd class="col-9"> {{ phone($url->mobile_number, 'MY') }} </dd>
                         @else
+
                         <dt class="col-3">Mobile Numbers</dt>
-                        @foreach($url->group->pluck('mobile_number') as $number)
-                        <dd class="col-9">{{ phone($number, 'MY') }}</dd>
-                        @endforeach
+                        <dd class="col-9">
+                            @foreach($url->group->pluck('mobile_number') as $number)
+                            {{ phone($number, 'MY') }}
+                            <br>
+                            @endforeach
+
+                        </dd>
+
                         @endif
                         <dt class="col-3">Lead Capture</dt>
                         <dd class="col-9">{{$url->enable_lead_capture ? "Enabled" : "Disabled"}}</dd>
