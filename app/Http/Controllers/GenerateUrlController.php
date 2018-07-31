@@ -60,12 +60,14 @@ class GenerateUrlController extends Controller
                 'required',
                 Rule::in(['single', 'group']),
                 'bail',
+                'max:255',
             ],
             'alias'               => [
-                'sometimes',
+                'nullable',
                 Rule::unique('shortened_urls'),
                 'regex:^[a-zA-Z0-9_-]*$',
             ],
+            'text'                => 'nullable|max:5000',
             'mobile_number'       => [
                 'required_if:type,single',
                 'nullable',
@@ -81,15 +83,14 @@ class GenerateUrlController extends Controller
                 'boolean',
                 'required',
             ],
-            'title'               => 'required_with:description',
-            'description'         => 'required_with:title',
+            'title'               => 'required_with:description|max:255',
+            'description'         => 'required_with:title|max:255',
             'image'               => 'required_with:title,description|image',
         ]);
 
         $url = DB::transaction(function () use ($request) {
             if (isset($request->image)) {
-                $pathName = $request->alias . '.' . $request->image->getClientOriginalExtension();
-                $request->image->move(public_path('images/og'), $pathName);
+                $pathName = $request->image->store('meta');
             }
 
             if ($request->type === 'single') {
@@ -187,10 +188,12 @@ class GenerateUrlController extends Controller
                 'bail',
             ],
             'alias'               => [
-                'required',
+                'nullable',
                 Rule::unique('shortened_urls')->ignore($url->id),
+                'regex:^[a-zA-Z0-9_-]*$',
+                'max:255',
             ],
-            'text'                => 'sometimes|max:5000',
+            'text'                => 'nullable|max:5000',
             'mobile_number'       => [
                 'required_if:type,single',
                 'phone:MY',
@@ -207,9 +210,9 @@ class GenerateUrlController extends Controller
                 'boolean',
                 'required',
             ],
-            'title'               => 'required_with:description',
-            'description'         => 'required_with:title',
-            'image'               => 'required_with:title,description|image',
+            'title'               => 'required_with:description|max:255',
+            'description'         => 'required_with:title|max:255',
+            'image'               => 'required_with:title,description|image|max:255',
         ]);
 
         $url = DB::transaction(function () use ($request, $url) {

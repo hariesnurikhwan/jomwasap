@@ -205,7 +205,6 @@
 									<small class="text-danger">{{$errors->first('image')}}</small>
 								</div>
 							</div>
-							<p class="text-default">Currently we only support Malaysia (+60) country code.</p>
 						</div>
 						<div class="btn-group pull-right">
 							<input type="reset" value="Reset" class="btn btn-warning">

@@ -96,6 +96,7 @@
 </script>
 @endpush
 
+
 <div class="container" v-cloak id="editUrl">
 	<div class="row justify-content-md-center">
 		<div class="col-md-10">
@@ -135,7 +136,8 @@
 								</div>
 								<div class="form-group">
 									<label for="type">Type</label>
-									<input class="form-control" disabled type="text" name="type" v-model="type" value="{{ $url->type }}">
+									<input class="form-control" disabled value="{{ ucfirst($url->type) }}">
+									<input type="hidden" name="type" value="{{ $url->type }}">
 								</div>
 
 								<div v-if="type == 'group' " id="displayGroup">

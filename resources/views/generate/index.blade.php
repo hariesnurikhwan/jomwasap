@@ -38,7 +38,7 @@
                                         {{ $loop->iteration }}
                                     </th>
                                     <td>
-                                        <a href="{{ url('https://h1.jomwasap.my/' . $url->alias) }}">{{ $url->alias }}</a>
+                                        <a href="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">{{ $url->alias }}</a>
                                         <div class="float-right">
                                             <button class="btn btn-secondary btn-sm" data-clipboard-text="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">
                                                 <span class="fa fa-clipboard"></span>
