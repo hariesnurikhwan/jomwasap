@@ -2,60 +2,74 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Links Generated
-                    <a href="{{ route('generate.create') }}" class="btn btn-success btn-xs pull-right">Create Links</a>
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-condensed">
+    <div class="row justify-content-md-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card">
+                    <div class="card-header">
+                        Links Generated
+                        <a href="{{ route('generate.create') }}" class="btn btn-success btn-sm float-right">Create Links</a>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless table-hover">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>URL</th>
-                                    <th>Type</th>
-                                    <th>Mobile Number</th>
-                                    <th>Actions</th>
+                                    <th scope="col">
+                                        #
+                                    </th>
+                                    <th scope="col">
+                                        URL
+                                    </th>
+                                    <th scope="col">
+                                        Type
+                                    </th>
+                                    <th scope="col">
+                                        Mobile Number
+                                    </th>
+                                    <th scope="col">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($urls as $url)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <th scope="row">
+                                        {{ $loop->iteration }}
+                                    </th>
                                     <td>
-                                        {{ url('https://hi.jomwasap.my/' . $url->alias) }}
-                                        <div class="pull-right">
-                                            <button class="btn btn-info btn-xs" data-clipboard-text="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">
-                                                <span class="glyphicon glyphicon-copy"></span>
+                                        <a href="{{ url('https://h1.jomwasap.my/' . $url->alias) }}">{{ url('https://h1.jomwasap.my/' . $url->alias) }}</a>
+                                        <div class="float-right">
+                                            <button class="btn btn-secondary btn-sm" data-clipboard-text="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">
+                                                <span class="fa fa-clipboard"></span>
                                             </button>
                                         </div>
                                     </td>
-                                    <td>{{ ucfirst($url->type) }}</td>
+                                    <td>
+                                        {{ ucfirst($url->type) }}
+                                    </td>
                                     @if($url->type === 'single')
-                                    <td>{{ $url->mobile_number }}</td>
+                                    <td>
+                                        {{ $url->mobile_number }}
+                                    </td>
                                     @else
                                     <td>
                                         @foreach($url->group->pluck('mobile_number')->toArray() as $number)
-                                        {{$number}}
+                                        {{ $number }}
                                         <br>
                                         @endforeach
                                     </td>
                                     @endif
                                     <td>
-                                        <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-xs">Show</a>
-                                        <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-warning btn-xs">Edit</a>
+                                        <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-sm">Show</a>
+                                        <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-info btn-sm">Edit</a>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $urls->links() }}
                     </div>
-                </div>
-                <div class="pull-right">
-                    {{ $urls->links() }}
                 </div>
             </div>
         </div>
