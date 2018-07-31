@@ -48,20 +48,22 @@
 		},
 		updated: function() {
 			this.$nextTick(function() {
-				if (this.inputs.length >= 5) {
-					$('#addField').prop('disabled', true);
-				}
+				if (this.type === 'group') {
+					if (this.inputs.length >= 5) {
+						$('#addField').prop('disabled', true);
+					}
 
-				if (this.inputs.length < 5) {
-					$('#addField').prop('disabled', false);
-				}
+					if (this.inputs.length < 5) {
+						$('#addField').prop('disabled', false);
+					}
 
-				if (this.inputs.length < 2) {
-					$('#submit').prop('disabled', true);
-				}
+					if (this.inputs.length < 2) {
+						$('#submit').prop('disabled', true);
+					}
 
-				if (this.inputs.length > 1) {
-					$('#submit').prop('disabled', false);
+					if (this.inputs.length > 1) {
+						$('#submit').prop('disabled', false);
+					}
 				}
 			})
 		},
@@ -131,7 +133,10 @@
 									<small class="text-danger">{{ $errors->first('alias') }}</small>
 									<p class="text-default">If left empty, system will automatically generate the alias.</p>
 								</div>
-								<input type="hidden" name="type" v-model="type" value="{{ $url->type }}">
+								<div class="form-group">
+									<label for="type">Type</label>
+									<input class="form-control" disabled type="text" name="type" v-model="type" value="{{ $url->type }}">
+								</div>
 
 								<div v-if="type == 'group' " id="displayGroup">
 									<div class="form-group">
