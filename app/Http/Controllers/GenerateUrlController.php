@@ -83,8 +83,8 @@ class GenerateUrlController extends Controller
                 'boolean',
                 'required',
             ],
-            'title'               => 'required_with:description|max:255',
-            'description'         => 'required_with:title|max:255',
+            'title'               => 'required_with:description,image|max:255',
+            'description'         => 'required_with:title,image|max:255',
             'image'               => 'required_with:title,description|image',
         ]);
 
@@ -211,9 +211,9 @@ class GenerateUrlController extends Controller
                 'boolean',
                 'required',
             ],
-            'title'               => 'required_with:description|max:255',
-            'description'         => 'required_with:title|max:255',
-            'image'               => 'required_with:title,description|image|max:255',
+            'title'               => 'required_with:description,image|max:255',
+            'description'         => 'required_with:title,image|max:255',
+            'image'               => 'required_with:title,description|image',
         ]);
 
         $url = DB::transaction(function () use ($request, $url) {
