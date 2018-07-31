@@ -1,13 +1,30 @@
 
+
+
+// Bootstrap
+@import "node_modules/bootstrap/scss/bootstrap.scss";
+
 // Fonts
+@import "node_modules/font-awesome/scss/font-awesome.scss";
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
 
 // Variables
 @import "variables";
 
-// Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 [v-cloak] {
 	display: none;
+}
+
+.nav-dropdown {
+	right: 0;
+	left: auto;
+}
+
+.card {
+	font-size: 0.90rem;
+}
+
+body {
+	margin-bottom: 90px;
 }
