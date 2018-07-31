@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class AddTypeColumnAndChangeMobileNumberToNullableInShortenedUrlsTable extends Migration
+class AddTitleDescriptionAndImageColumnInShortenedUrlsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,13 @@ class AddTypeColumnAndChangeMobileNumberToNullableInShortenedUrlsTable extends M
      */
     public function up()
     {
+
         Schema::table('shortened_urls', function ($table) {
-            $table->string('mobile_number', 13)->nullable()->change();
-            $table->string('type')->default('single')->after('mobile_number');
+            $table->string('title')->nullable()->after('text');
+            $table->string('description')->nullable()->after('title');
+            $table->string('image')->nullable()->after('description');
         });
+
     }
 
     /**
@@ -26,8 +29,9 @@ class AddTypeColumnAndChangeMobileNumberToNullableInShortenedUrlsTable extends M
     public function down()
     {
         Schema::table('shortened_urls', function ($table) {
-            $table->dropColumn('mobile_number');
-            $table->dropColumn('type');
+            $table->dropColumn('title');
+            $table->dropColumn('description');
+            $table->dropColumn('image');
         });
     }
 }

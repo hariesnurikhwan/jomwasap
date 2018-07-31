@@ -17,4 +17,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/lead/{alias}', 'LeadController@toggle');
+Route::post('/lead/{id}', 'LeadController@destroy');
