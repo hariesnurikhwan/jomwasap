@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Lead;
 use App\ShortenedUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -26,13 +27,10 @@ class LeadController extends Controller
         return redirect()->action('VisitUrlController@go', ['alias' => $request->alias])->cookie($cookie);
     }
 
-    public function toggle($alias)
+    public function destroy($id)
     {
-        $url = ShortenedUrl::whereAlias($alias)->firstOrFail();
+        $lead = Lead::findOrFail($id)->delete();
 
-        $url->switchLeadCapture();
-
-        return $url;
-
+        return response()->json(['success' => 'success'], 200);
     }
 }

@@ -64,6 +64,7 @@ class GenerateUrlController extends Controller
             'alias'               => [
                 'sometimes',
                 Rule::unique('shortened_urls'),
+                'regex:^[a-zA-Z0-9_-]*$',
             ],
             'mobile_number'       => [
                 'required_if:type,single',

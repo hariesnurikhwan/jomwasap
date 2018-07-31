@@ -2,7 +2,39 @@
 
 @section('content')
 
-<div class="container">
+@push('scripts')
+
+<script>
+    let showUrl = new Vue({
+        el: '#showUrl',
+        data: {
+            leads: [],
+        },
+        methods: {
+            deleteLead: function(id, index) {
+                axios.post('/api/lead/' + id).then((res) => {
+                    this.leads.splice(index, 1);
+                });
+            }
+        },
+        updated: function() {
+
+        },
+        mounted: function() {
+            @foreach($url->lead as $lead)
+            this.leads.push({
+                name: '{{ $lead->name }}',
+                mobile_number: '{{ $lead->mobile_number }}',
+                id: '{{ $lead->id }}'
+            })
+            @endforeach
+        }
+    })
+</script>
+
+@endpush
+
+<div id="showUrl" class="container" v-cloak>
     <div class="row justify-content-md-center">
         <div class="col-md-8">
             <div class="card">
@@ -14,7 +46,7 @@
                     <dl class="row">
                         <dt class="col-3">URL</dt>
                         <dd class="col-9">
-                            https://hi.jomwasap.my/{{ $url->alias }}
+                            <a href="https://hi.jomwasap.my/{{ $url->alias }}">https://hi.jomwasap.my/{{ $url->alias }}</a>
                             <div class="pull-right">
                                 <button class="btn btn-info btn-sm" data-clipboard-text="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">
                                     <span class="fa fa-copy"></span>
@@ -44,14 +76,28 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Mobile Number</th>
+                            <th>Action</th>
                         </tr>
-                        @foreach($url->lead as $lead)
+
+                        <tr v-for="(lead, index) in leads">
+                            <td>@{{index + 1}}</td>
+                            <td>@{{lead.name}}</td>
+                            <td>@{{lead.mobile_number}}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-danger" v-on:click.prevent="deleteLead(lead.id, index)">Delete</button>
+                            </td>
+                        </tr>
+
+                        {{-- @foreach($url->lead as $lead)
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$lead->name}}</td>
                             <td>{{$lead->mobile_number}}</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-danger" href="#">Delete</a>
+                            </td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
                     </table>
                 </div>
             </div>
