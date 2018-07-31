@@ -212,13 +212,10 @@ class GenerateUrlController extends Controller
         ]);
 
         $url = DB::transaction(function () use ($request, $url) {
-<<<<<<< HEAD
             if (isset($request->title)) {
                 $pathName = $request->alias . '.' . $request->image->getClientOriginalExtension();
                 $request->image->move(public_path('images/og'), $pathName);
             }
-=======
->>>>>>> 8827dac... Fix again.
 
             if ($url->type === 'single') {
                 if (isset($request->title)) {
@@ -273,10 +270,6 @@ class GenerateUrlController extends Controller
                     $url->group()->where('mobile_number', $number)->delete();
                 }
             }
-<<<<<<< HEAD
-=======
-
->>>>>>> 8827dac... Fix again.
             return $url;
         });
 
