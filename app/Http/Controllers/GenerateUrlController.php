@@ -65,7 +65,7 @@ class GenerateUrlController extends Controller
             'alias'               => [
                 'nullable',
                 Rule::unique('shortened_urls'),
-                'regex:^[a-zA-Z0-9_-]*$',
+                'regex:/^[a-zA-Z0-9_-]*$/',
             ],
             'text'                => 'nullable|max:5000',
             'mobile_number'       => [
@@ -191,7 +191,7 @@ class GenerateUrlController extends Controller
             'alias'               => [
                 'nullable',
                 Rule::unique('shortened_urls')->ignore($url->id),
-                'regex:^[a-zA-Z0-9_-]*$',
+                'regex:/^[a-zA-Z0-9_-]*$/',
                 'max:255',
             ],
             'text'                => 'nullable|max:5000',
