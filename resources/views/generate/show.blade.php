@@ -87,17 +87,6 @@
                                 <button class="btn btn-sm btn-outline-danger" v-on:click.prevent="deleteLead(lead.id, index)">Delete</button>
                             </td>
                         </tr>
-
-                        {{-- @foreach($url->lead as $lead)
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td>{{$lead->name}}</td>
-                            <td>{{$lead->mobile_number}}</td>
-                            <td>
-                                <a class="btn btn-sm btn-outline-danger" href="#">Delete</a>
-                            </td>
-                        </tr>
-                        @endforeach --}}
                     </table>
                 </div>
             </div>
