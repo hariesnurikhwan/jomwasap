@@ -236,10 +236,11 @@ class GenerateUrlController extends Controller
                     ]);
                 } else {
                     $url->update([
-                        'alias'         => $request->alias,
-                        'mobile_number' => $request->mobile_number,
-                        'text'          => $request->text,
-                        'type'          => $request->type,
+                        'alias'               => $request->alias,
+                        'mobile_number'       => $request->mobile_number,
+                        'enable_lead_capture' => $request->enable_lead_capture,
+                        'text'                => $request->text,
+                        'type'                => $request->type,
                     ]);
                 }
             } elseif ($url->type === 'group') {
@@ -261,9 +262,10 @@ class GenerateUrlController extends Controller
                     ]);
                 } else {
                     $url->update([
-                        'alias'         => $request->alias,
-                        'mobile_number' => $request->mobile_number,
-                        'text'          => $request->text,
+                        'alias'               => $request->alias,
+                        'mobile_number'       => $request->mobile_number,
+                        'enable_lead_capture' => $request->enable_lead_capture,
+                        'text'                => $request->text,
                         'type',
                     ]);
                 }
