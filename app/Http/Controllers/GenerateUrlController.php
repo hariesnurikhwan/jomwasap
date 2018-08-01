@@ -100,7 +100,7 @@ class GenerateUrlController extends Controller
                 'enable_lead_capture' => $request->enable_lead_capture,
             ];
 
-            if ($request->filled('title')) {
+            if ($request->has('title')) {
                 $newUrl = array_merge($newUrl, [
                     'title'       => $request->title,
                     'description' => $request->description,
@@ -108,11 +108,11 @@ class GenerateUrlController extends Controller
                 ]);
             }
 
-            if ($request->filled('mobile_number')) {
+            if ($request->has('mobile_number')) {
                 $newUrl = array_merge($newUrl, ['mobile_number' => $request->mobile_number]);
             }
 
-            $url->update($newUrl);
+            $url = Auth::user()->addUrl(new ShortenedUrl($newUrl));
 
             if ($request->type === 'group') {
                 foreach ($request->mobile_numbers as $number) {
@@ -212,7 +212,7 @@ class GenerateUrlController extends Controller
                 'enable_lead_capture' => $request->enable_lead_capture,
             ];
 
-            if ($request->filled('title')) {
+            if ($request->has('title')) {
                 $editUrl = array_merge($editUrl, [
                     'title'       => $request->title,
                     'description' => $request->description,
@@ -220,13 +220,13 @@ class GenerateUrlController extends Controller
                 ]);
             }
 
-            if ($url->filled('mobile_number')) {
+            if ($request->has('mobile_number')) {
                 $editUrl = array_merge($editUrl, ['mobile_number' => $request->mobile_number]);
             }
 
             $url->update($editUrl);
 
-            if ($url->type === 'single') {
+            if ($url->type === 'group') {
 
                 $existingNumber = $url->group()->pluck('mobile_number')->toArray();
 
