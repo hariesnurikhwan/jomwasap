@@ -213,11 +213,11 @@ class GenerateUrlController extends Controller
             ],
             'title'               => 'required_with:description,image|max:255',
             'description'         => 'required_with:title,image|max:255',
-            'image'               => 'required_with:title,description|image',
+            'image'               => 'nullable|image',
         ]);
 
         $url = DB::transaction(function () use ($request, $url) {
-            if (isset($request->title)) {
+            if (isset($request->image)) {
                 $pathName = $request->alias . '.' . $request->image->getClientOriginalExtension();
                 $request->image->move(public_path('images/og'), $pathName);
             }
@@ -232,7 +232,7 @@ class GenerateUrlController extends Controller
                         'enable_lead_capture' => $request->enable_lead_capture,
                         'title'               => $request->title,
                         'description'         => $request->description,
-                        'image'               => $pathName,
+                        'image'               => $pathName ?? $url->image,
                     ]);
                 } else {
                     $url->update([
