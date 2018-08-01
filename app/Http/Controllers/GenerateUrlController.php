@@ -196,7 +196,7 @@ class GenerateUrlController extends Controller
             ],
             'title'               => 'required_with:description|max:255',
             'description'         => 'required_with:title|max:255',
-            'image'               => 'required_with:title,description|image|max:255',
+            'image'               => 'nullable|image',
         ]);
 
         $url = DB::transaction(function () use ($request, $url) {
@@ -216,7 +216,7 @@ class GenerateUrlController extends Controller
                 $editUrl = array_merge($editUrl, [
                     'title'       => $request->title,
                     'description' => $request->description,
-                    'image'       => $pathName,
+                    'image'       => $pathName ?? $url->image,
                 ]);
             }
 
