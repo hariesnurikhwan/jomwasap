@@ -9,11 +9,27 @@
         el: '#showUrl',
         data: {
             leads: [],
+
+            alias: '{{ $url->alias }}',
         },
         methods: {
             deleteLead: function(id, index) {
                 axios.post('/api/lead/' + id).then((res) => {
                     this.leads.splice(index, 1);
+                });
+            },
+            archivedLeads: function() {
+                axios.get('/api/lead/archived/' + this.alias).then((res) => {
+                    this.leads = [];
+                    data = res.data;
+                    for (var i = 0; i < data.length; i++) {
+                        // res.data[i]
+                        this.leads.push({
+                            name: data[i].name,
+                            mobile_number: data[i].mobile_number,
+                            id: data[i].id,
+                        });
+                    }
                 });
             }
         },
@@ -90,10 +106,11 @@
                             <td>@{{lead.name}}</td>
                             <td>@{{lead.mobile_number}}</td>
                             <td>
-                                <button class="btn btn-sm btn-outline-danger" v-on:click.prevent="deleteLead(lead.id, index)">Delete</button>
+                                <button class="btn btn-sm btn-outline-danger" v-on:click.prevent="deleteLead(lead.id, index)">Archive</button>
                             </td>
                         </tr>
                     </table>
+                    <button v-on:click.prevent="archivedLeads()" class="btn btn-outline-info btn-sm">Show Archived leads</button>
                 </div>
             </div>
         </div>

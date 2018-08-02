@@ -33,4 +33,15 @@ class LeadController extends Controller
 
         return response()->json(['success' => 'success'], 200);
     }
+
+    public function archivedLeads($alias)
+    {
+
+        $url = ShortenedUrl::whereAlias($alias)->firstOrFail();
+
+        $leads = $url->lead()->onlyTrashed()->get();
+
+        return $leads;
+
+    }
 }
