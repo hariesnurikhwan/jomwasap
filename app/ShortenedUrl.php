@@ -32,4 +32,14 @@ class ShortenedUrl extends Model
     {
         return $this->hasMany(Lead::class);
     }
+
+    public function hits()
+    {
+        return $this->hasMany(ShortenedUrlHits::class);
+    }
+
+    public function newHit(ShortenedUrlHits $hit)
+    {
+        return $this->hits()->save($hit);
+    }
 }
