@@ -2,4 +2,4 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="{{ $url->title }}" />
 <meta property="og:description" content="{{ $url->description }}" />
-<meta property="og:image" content="{{ asset('images/og/' . $url->image) }}" />
+<meta property="og:image" content="{{ asset('storage/' .  $url->image) }}" />
