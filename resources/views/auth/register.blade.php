@@ -28,7 +28,7 @@
                             <small class="text-danger">{{ $errors->first('password') }}</small>
                         </div>
                         <div class="form-group">
-                            <label for="password_confirmation">Password</label>
+                            <label for="password_confirmation">Password Confirmation</label>
                             <input type="password" name="password_confirmation" class="form-control" required>
                             <small class="text-danger">{{ $errors->first('password_confirmation') }}</small>
                         </div>
