@@ -26,3 +26,4 @@ Route::group(['domain' => 'hi.jomwasap.my'], function () {
 Route::get('/go/{alias}', 'VisitUrlController@go')->middleware(['CheckLeadCapture', 'UrlHits']);
 
 Route::post('/lead', 'LeadController@store')->name('lead');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');

@@ -69,8 +69,6 @@
 		},
 		mounted: function() {
 
-			console.log(this.mobile_number);
-
 			@if(old('mobile_numbers'))
 			@for($i = 0; $i < count(old('mobile_numbers')); $i++)
 			this.inputs.push({

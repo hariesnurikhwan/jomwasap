@@ -36,4 +36,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(ShortenedUrl::class);
     }
+
+    public function urlCount()
+    {
+        return $this->url()->count();
+    }
+
+    public function totalHitsCount()
+    {
+        return $this->url()->hitsCount();
+    }
 }
