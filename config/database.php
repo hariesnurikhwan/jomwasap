@@ -33,13 +33,13 @@ return [
 
     'connections' => [
 
-        'sqlite'        => [
+        'sqlite' => [
             'driver'   => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'database' => database_path('testing.sqlite'),
             'prefix'   => '',
         ],
 
-        'mysql'         => [
+        'mysql'  => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', '127.0.0.1'),
             'port'      => env('DB_PORT', '3306'),
@@ -53,21 +53,7 @@ return [
             'engine'    => null,
         ],
 
-        'mysql_testing' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST', '127.0.0.1'),
-            'port'      => env('DB_PORT', '3306'),
-            'database'  => 'jomwassap_test',
-            'username'  => 'root',
-            'password'  => '',
-            'charset'   => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix'    => '',
-            'strict'    => true,
-            'engine'    => null,
-        ],
-
-        'pgsql'         => [
+        'pgsql'  => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', '127.0.0.1'),
             'port'     => env('DB_PORT', '5432'),

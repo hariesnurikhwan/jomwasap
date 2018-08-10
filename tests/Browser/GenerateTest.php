@@ -32,10 +32,9 @@ class GenerateTest extends DuskTestCase
      */
     public function testShowGeneratedLinks()
     {
+        $user = factory(User::class)->create();
 
         $this->browse(function ($browser) {
-
-            $user = User::find(1);
 
             $url = ShortenedUrl::where('user_id', $user->id)->first();
 
@@ -50,7 +49,7 @@ class GenerateTest extends DuskTestCase
 
         $this->browse(function ($browser) {
 
-            $user = User::find(1);
+            $user = factory(User::class)->create();
 
             $url = ShortenedUrl::make([
                 'type'                => 'single',

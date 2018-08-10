@@ -9,7 +9,6 @@
         "doctrine/dbal": "^2.8",
         "guzzlehttp/guzzle": "^6.3",
         "jenssegers/agent": "^2.5",
-        "laravel/dusk": "1.0",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",
@@ -21,6 +20,7 @@
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
+        "laravel/dusk": "^1.0",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~5.7",
         "staudenmeir/dusk-updater": "^1.0"

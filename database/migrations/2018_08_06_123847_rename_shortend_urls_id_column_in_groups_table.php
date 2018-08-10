@@ -13,7 +13,7 @@ class RenameShortendUrlsIdColumnInGroupsTable extends Migration
     public function up()
     {
         Schema::table('groups', function ($table) {
-            $table->renameColumn('shortened_urls_id', 'shortened_url_id');
+            // $table->renameColumn('shortened_urls_id', 'shortened_url_id');
         });
     }
 
