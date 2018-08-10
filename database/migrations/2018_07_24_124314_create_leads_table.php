@@ -15,7 +15,7 @@ class CreateLeadsTable extends Migration
     {
         Schema::create('leads', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('shortened_url_id');
+            $table->integer('shortened_url_id')->unsinged();
             $table->string('name');
             $table->string('mobile_number');
             $table->timestamps();

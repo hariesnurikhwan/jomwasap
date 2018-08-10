@@ -15,9 +15,9 @@ class CreateShortenedUrlHitsTable extends Migration
     {
         Schema::create('shortened_url_hits', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('shortened_url_id');
-            $table->string('user_agent');
-            $table->string('ip_address');
+            $table->integer('shortened_url_id')->unsinged();
+            $table->string('user_agent')->nullable();
+            $table->string('ip_address')->nullable();
             $table->timestamps();
         });
     }

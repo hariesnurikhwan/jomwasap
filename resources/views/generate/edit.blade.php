@@ -178,7 +178,7 @@
 						</div>
 						<div class="form-group">
 							<label for="text">Pretext Chat</label>
-							<textarea cols="50" rows="10" name="text" class="form-control">{{old('text')}}</textarea>
+							<textarea cols="50" rows="10" name="text" class="form-control">{{ old('text') ? old('text') : $url->text }}</textarea>
 							<small class="text-danger">{{$errors->first('text')}}</small>
 						</div>
 					</div>

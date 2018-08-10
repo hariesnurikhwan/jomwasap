@@ -15,7 +15,7 @@ class CreateGroupsTable extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('shortened_urls_id');
+            $table->integer('shortened_urls_id')->unsinged();
             $table->string('mobile_number', 13);
             $table->boolean('enabled')->default(1);
             $table->timestamps();
