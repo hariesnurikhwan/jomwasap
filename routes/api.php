@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/lead/{id}', 'LeadController@destroy');
+Route::get('/lead/archived/{alias}', 'LeadController@archivedLeads');

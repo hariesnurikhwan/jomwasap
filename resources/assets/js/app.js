@@ -19,9 +19,7 @@ window.$ = window.jQuery = $;
 
 Vue.component('example', require('./components/Example.vue'));
 
-// const app = new Vue({
-//     el: '#app'
-// });
+import Chart from 'chart.js';
 
 const ClipboardJS = require('clipboard');
 var clipboard = new ClipboardJS('.btn');
@@ -44,3 +42,4 @@ function hideTooltip(button) {
     button.tooltip('hide');
   }, 1000);
 }
+

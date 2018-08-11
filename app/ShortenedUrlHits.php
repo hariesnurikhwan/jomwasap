@@ -4,13 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
+class ShortenedUrlHits extends Model
 {
-
     protected $guarded = [];
 
-    public function urls()
+    public function url()
     {
         return $this->belongsTo(ShortenedUrl::class);
     }
+
 }

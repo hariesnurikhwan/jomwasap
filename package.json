@@ -17,7 +17,10 @@
     "clipboard": "^2.0.0"
   },
   "dependencies": {
+    "chart.js": "^2.7.2",
     "font-awesome": "^4.7.0",
-    "popper.js": "^1.14.3"
+    "popper.js": "^1.14.3",
+    "vue-chartjs": "^3.4.0",
+    "vue-switches": "^2.0.1"
   }
 }

@@ -1,9 +1,5 @@
 
 
-
-// Bootstrap
-@import "node_modules/bootstrap/scss/bootstrap.scss";
-
 // Fonts
 @import "node_modules/font-awesome/scss/font-awesome.scss";
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
@@ -11,6 +7,10 @@
 // Variables
 @import "variables";
 
+// Bootstrap
+@import "theme";
+
+@import "sidebar";
 
 [v-cloak] {
 	display: none;
@@ -21,10 +21,18 @@
 	left: auto;
 }
 
-.card {
-	font-size: 0.90rem;
+
+
+.url_count {
+  p {
+    margin: 0;
+  }
+  .url_count_number {
+    font-size: 5rem;
+  }
+  .url_count_link {
+
+  }
 }
 
-body {
-	margin-bottom: 90px;
-}
+

@@ -83,56 +83,38 @@ class GenerateUrlController extends Controller
                 'boolean',
                 'required',
             ],
-            'title'               => 'required_with:description,image|max:255',
-            'description'         => 'required_with:title,image|max:255',
+            'title'               => 'required_with:description|max:255',
+            'description'         => 'required_with:title|max:255',
             'image'               => 'required_with:title,description|image',
         ]);
 
         $url = DB::transaction(function () use ($request) {
-            if (isset($request->image)) {
+            if ($request->hasFile('image')) {
                 $pathName = $request->image->store('meta');
             }
 
-            if ($request->type === 'single') {
-                if (isset($request->title)) {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'mobile_number'       => $request->mobile_number,
-                        'text'                => $request->text,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'title'               => $request->title,
-                        'description'         => $request->description,
-                        'image'               => $pathName,
-                    ]));
-                } else {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'mobile_number'       => $request->mobile_number,
-                        'text'                => $request->text,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                    ]));
-                }
-            } elseif ($request->type === 'group') {
-                if (isset($request->title)) {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'text'                => $request->text,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'title'               => $request->title,
-                        'description'         => $request->description,
-                        'image'               => $pathName,
-                    ]));
-                } else {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'text'                => $request->text,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                    ]));
-                }
+            $newUrl = [
+                'alias'               => $request->alias,
+                'text'                => $request->text,
+                'type'                => $request->type,
+                'enable_lead_capture' => $request->enable_lead_capture,
+            ];
+
+            if ($request->has('title')) {
+                $newUrl = array_merge($newUrl, [
+                    'title'       => $request->title,
+                    'description' => $request->description,
+                    'image'       => $pathName,
+                ]);
+            }
+
+            if ($request->has('mobile_number')) {
+                $newUrl = array_merge($newUrl, ['mobile_number' => $request->mobile_number]);
+            }
+
+            $url = Auth::user()->addUrl(new ShortenedUrl($newUrl));
+
+            if ($request->type === 'group') {
                 foreach ($request->mobile_numbers as $number) {
                     $url->group()->create([
                         'mobile_number' => $number,
@@ -142,6 +124,7 @@ class GenerateUrlController extends Controller
 
             return $url;
         });
+
         return redirect()->route('generate.show', $url->hashid);
 
     }
@@ -211,64 +194,46 @@ class GenerateUrlController extends Controller
                 'boolean',
                 'required',
             ],
-            'title'               => 'required_with:description,image|max:255',
-            'description'         => 'required_with:title,image|max:255',
+            'title'               => 'required_with:description|max:255',
+            'description'         => 'required_with:title|max:255',
             'image'               => 'nullable|image',
         ]);
 
         $url = DB::transaction(function () use ($request, $url) {
-            if (isset($request->image)) {
-                $pathName = $request->alias . '.' . $request->image->getClientOriginalExtension();
-                $request->image->move(public_path('images/og'), $pathName);
+
+            if ($request->hasFile('image')) {
+                $pathName = $request->image->store('meta');
             }
 
-            if ($url->type === 'single') {
-                if (isset($request->title)) {
-                    $url->update([
-                        'alias'               => $request->alias,
-                        'mobile_number'       => $request->mobile_number,
-                        'text'                => $request->text,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'title'               => $request->title,
-                        'description'         => $request->description,
-                        'image'               => $pathName ?? $url->image,
-                    ]);
-                } else {
-                    $url->update([
-                        'alias'               => $request->alias,
-                        'mobile_number'       => $request->mobile_number,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'text'                => $request->text,
-                        'type'                => $request->type,
-                    ]);
-                }
-            } elseif ($url->type === 'group') {
+            $editUrl = [
+                'alias'               => $request->alias,
+                'text'                => $request->text,
+                'type'                => $request->type,
+                'enable_lead_capture' => $request->enable_lead_capture,
+            ];
+
+            if ($request->has('title')) {
+                $editUrl = array_merge($editUrl, [
+                    'title'       => $request->title,
+                    'description' => $request->description,
+                    'image'       => $pathName ?? $url->image,
+                ]);
+            }
+
+            if ($request->has('mobile_number')) {
+                $editUrl = array_merge($editUrl, ['mobile_number' => $request->mobile_number]);
+            }
+
+            $url->update($editUrl);
+
+            if ($url->type === 'group') {
+
                 $existingNumber = $url->group()->pluck('mobile_number')->toArray();
 
                 $mobile_numbers = $request->mobile_numbers;
 
                 $editedNumbers = array_diff($existingNumber, $mobile_numbers);
 
-                if (isset($request->title)) {
-                    $url->update([
-                        'alias'               => $request->alias,
-                        'text'                => $request->text,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'title'               => $request->title,
-                        'description'         => $request->description,
-                        'image'               => $pathName,
-                    ]);
-                } else {
-                    $url->update([
-                        'alias'               => $request->alias,
-                        'mobile_number'       => $request->mobile_number,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'text'                => $request->text,
-                        'type',
-                    ]);
-                }
                 foreach ($mobile_numbers as $number) {
                     $url->group()->firstOrCreate(['mobile_number' => $number]);
                 }
@@ -279,6 +244,7 @@ class GenerateUrlController extends Controller
             }
 
             return $url;
+
         });
 
         return redirect()->route('generate.show', $url->hashid);

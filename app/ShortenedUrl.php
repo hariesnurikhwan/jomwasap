@@ -25,11 +25,22 @@ class ShortenedUrl extends Model
 
     public function group()
     {
-        return $this->hasMany(Group::class, 'shortened_urls_id');
+        return $this->hasMany(Group::class);
     }
 
     public function lead()
     {
         return $this->hasMany(Lead::class);
     }
+
+    public function hits()
+    {
+        return $this->hasMany(ShortenedUrlHits::class);
+    }
+
+    public function newHit(ShortenedUrlHits $hit)
+    {
+        return $this->hits()->save($hit);
+    }
+
 }
