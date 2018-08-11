@@ -46,7 +46,7 @@
                        </li>
                        @else
                        <li>
-                        <a href="/">Dashboard</a>
+                        <a href="/dashboard">Dashboard</a>
                     </li>
                     <li>
                         <a href="/generate">Generate</a>

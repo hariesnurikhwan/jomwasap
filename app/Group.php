@@ -11,6 +11,6 @@ class Group extends Model
 
     public function urls()
     {
-        return $this->belongsTo(ShortenedUrl::class, 'shortened_urls_id');
+        return $this->belongsTo(ShortenedUrl::class);
     }
 }

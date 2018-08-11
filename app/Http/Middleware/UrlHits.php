@@ -22,7 +22,7 @@ class UrlHits
 
         $user_agent = $request->header('User-Agent');
 
-        $ip = $request->ip();
+        $ip = $request->header('x-real-ip');
 
         $url->newHit(new ShortenedUrlHits([
             'user_agent' => $user_agent,

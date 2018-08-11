@@ -8,8 +8,9 @@ class ShortenedUrlHits extends Model
 {
     protected $guarded = [];
 
-    public function lead()
+    public function url()
     {
         return $this->belongsTo(ShortenedUrl::class);
     }
+
 }

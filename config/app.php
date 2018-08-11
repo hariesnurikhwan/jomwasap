@@ -185,6 +185,8 @@ return [
         Vinkla\Hashids\HashidsServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
+        Stevebauman\Location\LocationServiceProvider::class,
+
     ],
 
     /*
@@ -242,6 +244,8 @@ return [
         'Hashids'      => Vinkla\Hashids\Facades\Hashids::class,
         'Agent'        => Jenssegers\Agent\Facades\Agent::class,
         'Sentry'       => Sentry\SentryLaravel\SentryFacade::class,
+        'Location'     => Stevebauman\Location\Facades\Location::class,
+
     ],
 
 ];
