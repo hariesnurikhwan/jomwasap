@@ -52,9 +52,6 @@
                         <a href="/generate">Generate</a>
                     </li>
                     <li>
-                        <a href="#">Marketing Campaign</a>
-                    </li>
-                    <li>
                         <a v-on:click.prevent="logout" href="{{ route('logout') }}">Logout</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             {{csrf_field()}}
