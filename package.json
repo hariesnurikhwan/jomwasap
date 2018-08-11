@@ -18,11 +18,6 @@
   },
   "dependencies": {
     "chart.js": "^2.7.2",
-    "countup.js": "^1.9.3",
-<<<<<<< HEAD
-=======
-    "emoji-vue": "^0.2.3",
->>>>>>> browser-testing
     "font-awesome": "^4.7.0",
     "popper.js": "^1.14.3",
     "vue-chartjs": "^3.4.0",
