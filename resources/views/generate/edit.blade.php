@@ -180,19 +180,19 @@
 								</div>
 								<div class="form-group">
 									<label for="text">Pretext Chat</label>
-									<textarea cols="50" rows="10" name="text" class="form-control">{{old('text')}}</textarea>
+									<textarea cols="50" rows="10" name="text" class="form-control">{{ old('text') ? old('text') : $url->text }}</textarea>
 									<small class="text-danger">{{$errors->first('text')}}</small>
 								</div>
 							</div>
 							<div role="tabpanel" class="tab-pane" id="fbmetaTab">
 								<div class="form-group">
 									<label for="title">Title</label>
-									<input class="form-control" type="text" name="title" value={{old('title') ? old('title') : $url->title}}>
+									<input class="form-control" type="text" name="title" value="{{old('title') ? old('title') : $url->title}}">
 									<small class="text-danger">{{$errors->first('title')}}</small>
 								</div>
 								<div class="form-group">
 									<label for="description">Description</label>
-									<input class="form-control" type="text" name="description" value={{old('description') ? old('description') : $url->description }}>
+									<input class="form-control" type="text" name="description" value="{{old('description') ? old('description') : $url->description }}">
 									<small class="text-danger">{{$errors->first('description')}}</small>
 								</div>
 								<div class="form-group">
