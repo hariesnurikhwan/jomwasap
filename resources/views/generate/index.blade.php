@@ -63,7 +63,12 @@
                                     <td>
                                         <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-sm">Show</a>
                                         <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-info btn-sm">Edit</a>
+                                        <a href="#" onclick="event.preventDefault(); document.getElementById('delete_form').submit() " class="btn btn-danger btn-sm">Delete</a>
                                     </td>
+                                    <form id="delete_form" style="display: none;" action="{{ route('generate.destroy', $url->hashid) }}" method="post">
+                                        <input type="hidden" name="_method" value="delete">
+                                        {{csrf_field()}}
+                                    </form>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -75,4 +80,5 @@
         </div>
     </div>
 </div>
+
 @endsection
