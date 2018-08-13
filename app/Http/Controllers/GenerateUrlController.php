@@ -283,4 +283,10 @@ class GenerateUrlController extends Controller
 
         return redirect()->route('generate.show', $url->hashid);
     }
+
+    public function destroy(ShortenedUrl $url)
+    {
+        $url->delete();
+        return redirect()->route('generate.index');
+    }
 }
