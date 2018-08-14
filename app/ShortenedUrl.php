@@ -3,11 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Vinkla\Hashids\Facades\Hashids;
 
 class ShortenedUrl extends Model
 {
     protected $guarded = [];
+
+    use SoftDeletes;
 
     public function setAliasAttribute($value)
     {

@@ -8,7 +8,17 @@
                 <div class="card">
                     <div class="card-header">
                         Links Generated
-                        <a href="{{ route('generate.create') }}" class="btn btn-success btn-sm float-right">Create Links</a>
+                        <div class="float-right">
+                            <a href="{{ route('generate.create') }}" class="btn btn-success btn-sm m-1">Create Links</a>
+                            <br>
+                            @if(Request::exists('delete'))
+                            <a href="{{ route('generate.index') }}" class="btn btn-success btn-sm m-1">Active Links</a>
+                            @else
+                            <a href="{{ route('generate.index') }}?delete=1" class="btn btn-success btn-sm m-1">Archived Links</a>
+                            @endif
+                        </div>
+
+
                     </div>
                     <div class="card-body">
                         <table class="table table-borderless table-hover">
@@ -32,6 +42,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+
                                 @foreach($urls as $url)
                                 <tr>
                                     <th scope="row">
@@ -61,14 +72,20 @@
                                     </td>
                                     @endif
                                     <td>
+
                                         <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-sm">Show</a>
                                         <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-info btn-sm">Edit</a>
-                                        <a href="#" onclick="event.preventDefault(); document.getElementById('delete_form').submit() " class="btn btn-danger btn-sm">Delete</a>
+
+                                        @if(Request::exists('delete'))
+                                        <a href="{{ route('generate.restore', $url->alias) }}" class="btn btn-success btn-sm">Restore</a>
+                                        @else
+                                        <a href="{{ route('generate.destroy', $url->hashid) }}" onclick="event.preventDefault(); document.getElementById('delete_form_{{$loop->iteration}}').submit() " class="btn btn-danger btn-sm">Delete</a>
+                                        <form id="delete_form_{{$loop->iteration}}" style="display: none;" action="{{ route('generate.destroy', $url->hashid) }}" method="post">
+                                            <input type="hidden" name="_method" value="delete">
+                                            {{csrf_field()}}
+                                        </form>
+                                        @endif
                                     </td>
-                                    <form id="delete_form" style="display: none;" action="{{ route('generate.destroy', $url->hashid) }}" method="post">
-                                        <input type="hidden" name="_method" value="delete">
-                                        {{csrf_field()}}
-                                    </form>
                                 </tr>
                                 @endforeach
                             </tbody>
