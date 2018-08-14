@@ -19,7 +19,6 @@ class GenerateUrlController extends Controller
             'edit',
             'update',
             'destroy',
-            // 'restore',
         ]);
     }
 
@@ -280,12 +279,4 @@ class GenerateUrlController extends Controller
         return redirect()->route('generate.index');
     }
 
-    public function restore(Request $request)
-    {
-
-        $url = ShortenedUrl::onlyTrashed()->where('alias', $request->alias)->first();
-        $url->restore();
-        return redirect()->route('generate.index');
-
-    }
 }

@@ -26,4 +26,4 @@ Route::group(['domain' => 'hi.jomwasap.my'], function () {
 Route::get('/go/{alias}', 'VisitUrlController@go')->middleware('CheckLeadCapture');
 
 Route::post('/lead', 'LeadController@store')->name('lead');
-Route::get('/generate/restore/{alias}', 'GenerateUrlController@restore')->name('generate.restore');
+Route::get('/generate/{alias}/restore', 'RestoreUrlController@restore')->name('generate.restore');
