@@ -35,4 +35,9 @@ class ShortenedUrl extends Model
     {
         return $this->hasMany(Lead::class);
     }
+
+    public function scopeWhereHashId($query, $hashId)
+    {
+        return $query->whereKey(Hashids::decode($hashId)[0] ?? 0);
+    }
 }
