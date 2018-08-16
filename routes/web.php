@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::resource('generate', 'GenerateUrlController', ['parameters' => ['generate' => 'url'], 'middleware' => 'auth']);
+Route::get('/generate/{hashid}/restore', 'RestoreUrlController@restore', ['middleware' => 'auth'])->name('generate.restore');
 
 Route::group(['domain' => 'hi.jomwasap.my'], function () {
     Route::get('{alias}', 'VisitUrlController@go')->middleware('CheckLeadCapture');

@@ -12,7 +12,8 @@
 			mobile_number: '{{old('mobile_number')}}',
 			inputs: [],
 			mobile_numbers: [],
-			optional: false
+			optional: false,
+			image: '',
 
 		},
 		methods: {
@@ -46,6 +47,10 @@
 					mainTab.removeClass('active');
 				}
 			},
+
+			setImage: function() {
+				this.image = URL.createObjectURL(event.target.files[0]);
+			}
 
 		},
 		updated: function() {
@@ -134,6 +139,10 @@
 									<p class="text-default">If left empty, system will automatically generate the alias.</p>
 								</div>
 								<div class="form-group">
+									<label for="info">Info</label>
+									<input class="form-control" type="text" name="info" value="{{ old('info') ? old('info') : '' }}" >
+								</div>
+								<div class="form-group">
 									<label for="type">Type</label>
 									<select v-model="type" name="type" class="form-control form-group">
 										<option >Select Type</option>
@@ -201,9 +210,10 @@
 								</div>
 								<div class="form-group">
 									<label for="image">Image</label>
-									<input class="form-control" type="file" name="image">
+									<input accept="image/*" v-on:input="setImage()" class="form-control" type="file" name="image">
 									<small class="text-danger">{{$errors->first('image')}}</small>
 								</div>
+								<img class="img-thumbnail" :src="image" >
 							</div>
 						</div>
 						<div class="btn-group pull-right">

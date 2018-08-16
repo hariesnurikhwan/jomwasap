@@ -3,11 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Vinkla\Hashids\Facades\Hashids;
 
 class ShortenedUrl extends Model
 {
     protected $guarded = [];
+
+    use SoftDeletes;
 
     public function setAliasAttribute($value)
     {
@@ -31,5 +34,10 @@ class ShortenedUrl extends Model
     public function lead()
     {
         return $this->hasMany(Lead::class);
+    }
+
+    public function scopeWhereHashId($query, $hashId)
+    {
+        return $query->whereKey(Hashids::decode($hashId)[0] ?? 0);
     }
 }
