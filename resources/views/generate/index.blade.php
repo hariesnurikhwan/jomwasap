@@ -31,6 +31,9 @@
                                         URL
                                     </th>
                                     <th scope="col">
+                                        Info
+                                    </th>
+                                    <th scope="col">
                                         Type
                                     </th>
                                     <th scope="col">
@@ -55,6 +58,9 @@
                                                 <span class="fa fa-clipboard"></span>
                                             </button>
                                         </div>
+                                    </td>
+                                    <td>
+                                        {{ $url->info }}
                                     </td>
                                     <td>
                                         {{ ucfirst($url->type) }}

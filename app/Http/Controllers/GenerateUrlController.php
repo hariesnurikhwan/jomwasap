@@ -74,6 +74,7 @@ class GenerateUrlController extends Controller
                 'regex:/^[a-zA-Z0-9_-]*$/',
             ],
             'text'                => 'nullable|max:5000',
+            'info'                => 'nullable|max:255',
             'mobile_number'       => [
                 'required_if:type,single',
                 'nullable',
@@ -105,6 +106,7 @@ class GenerateUrlController extends Controller
                         'alias'               => $request->alias,
                         'mobile_number'       => $request->mobile_number,
                         'text'                => $request->text,
+                        'info'                => $request->info,
                         'type'                => $request->type,
                         'enable_lead_capture' => $request->enable_lead_capture,
                         'title'               => $request->title,
@@ -116,6 +118,7 @@ class GenerateUrlController extends Controller
                         'alias'               => $request->alias,
                         'mobile_number'       => $request->mobile_number,
                         'text'                => $request->text,
+                        'info'                => $request->info,
                         'type'                => $request->type,
                         'enable_lead_capture' => $request->enable_lead_capture,
                     ]));
@@ -125,6 +128,7 @@ class GenerateUrlController extends Controller
                     $url = Auth::user()->addUrl(new ShortenedUrl([
                         'alias'               => $request->alias,
                         'text'                => $request->text,
+                        'info'                => $request->info,
                         'type'                => $request->type,
                         'enable_lead_capture' => $request->enable_lead_capture,
                         'title'               => $request->title,
@@ -135,6 +139,7 @@ class GenerateUrlController extends Controller
                     $url = Auth::user()->addUrl(new ShortenedUrl([
                         'alias'               => $request->alias,
                         'text'                => $request->text,
+                        'info'                => $request->info,
                         'type'                => $request->type,
                         'enable_lead_capture' => $request->enable_lead_capture,
                     ]));
@@ -201,6 +206,7 @@ class GenerateUrlController extends Controller
                 'max:255',
             ],
             'text'                => 'nullable|max:5000',
+            'info'                => 'nullable|max:255',
             'mobile_number'       => [
                 'required_if:type,single',
                 'phone:MY',
@@ -231,6 +237,7 @@ class GenerateUrlController extends Controller
             $editUrl = [
                 'alias'               => $request->alias,
                 'text'                => $request->text,
+                'info'                => $request->info,
                 'type'                => $request->type,
                 'enable_lead_capture' => $request->enable_lead_capture,
             ];

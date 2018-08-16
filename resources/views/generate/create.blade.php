@@ -134,6 +134,10 @@
 									<p class="text-default">If left empty, system will automatically generate the alias.</p>
 								</div>
 								<div class="form-group">
+									<label for="info">Info</label>
+									<input class="form-control" type="text" name="info" value="{{ old('info') ? old('info') : '' }}" >
+								</div>
+								<div class="form-group">
 									<label for="type">Type</label>
 									<select v-model="type" name="type" class="form-control form-group">
 										<option >Select Type</option>

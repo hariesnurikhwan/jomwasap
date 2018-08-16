@@ -133,6 +133,10 @@
 							<p class="text-default">If left empty, system will automatically generate the alias.</p>
 						</div>
 						<div class="form-group">
+							<label for="info">Info</label>
+							<input class="form-control" type="text" name="info" value="{{ old('info') ? old('info') : $url->info }}">
+						</div>
+						<div class="form-group">
 							<label for="type">Type</label>
 							<input class="form-control" disabled value="{{ ucfirst($url->type) }}">
 							<input type="hidden" name="type" value="{{ $url->type }}">
