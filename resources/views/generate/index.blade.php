@@ -81,9 +81,8 @@
 
                                         <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-sm">Show</a>
                                         <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-info btn-sm">Edit</a>
-
                                         @if(Request::exists('delete'))
-                                        <a href="{{ route('generate.restore', $url->alias) }}" class="btn btn-success btn-sm">Restore</a>
+                                        <a href="{{ route('generate.restore', $url->hashid) }}" class="btn btn-success btn-sm">Restore</a>
                                         @else
                                         <a href="{{ route('generate.destroy', $url->hashid) }}" onclick="event.preventDefault(); document.getElementById('delete_form_{{$loop->iteration}}').submit() " class="btn btn-danger btn-sm">Delete</a>
                                         <form id="delete_form_{{$loop->iteration}}" style="display: none;" action="{{ route('generate.destroy', $url->hashid) }}" method="post">

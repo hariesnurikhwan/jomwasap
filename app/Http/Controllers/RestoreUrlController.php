@@ -3,15 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\ShortenedUrl;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Vinkla\Hashids\Facades\Hashids;
 
 class RestoreUrlController extends Controller
 {
-    public function restore(Request $request)
+
+    public function restore($hashid)
     {
-        $url = ShortenedUrl::onlyTrashed()->where('alias', $request->alias)->first();
+
+        $id = Hashids::decode($hashid)[0];
+
+        $url = ShortenedUrl::onlyTrashed($id)->first();
+
+        if ($url->user_id !== Auth::id()) {
+            return abort(404);
+        }
         $url->restore();
         return redirect()->route('generate.index');
-
     }
 }
