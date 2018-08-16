@@ -10,12 +10,13 @@ class RestoreUrlController extends Controller
 
     public function restore($hashId)
     {
-        $url = ShortenedUrl::onlyTrashed()->whereHashId($hashId)->firstOrFail();
+        $url = ShortenedUrl::onlyTrashed()
+            ->whereHashId($hashId)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
-        if ($url->user_id !== Auth::id()) {
-            return abort(404);
-        }
         $url->restore();
+
         return redirect()->route('generate.index');
     }
 }
