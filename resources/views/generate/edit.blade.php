@@ -194,7 +194,7 @@
 						</div>
 						<div class="form-group">
 							<label for="description">Description</label>
-							<input class="form-control" type="text" name="description" value={{old('description') ? old('description') : $url->description }}>
+							<input class="form-control" name="description" value="{{ old('description') ? old('description') : $url->description }}" >
 							<small class="text-danger">{{$errors->first('description')}}</small>
 						</div>
 						<div class="form-group">
