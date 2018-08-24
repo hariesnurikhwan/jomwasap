@@ -15,16 +15,22 @@ class MoveImageToCorrectStorage extends Migration
         $urls = ShortenedUrl::withTrashed()->get();
 
         foreach ($urls as $url) {
-            if (!preg_match('/^meta\//', $url->image) && $url->image === !null) {
-                rename(public_path('images/og/' . $url->image), storage_path('app/public/meta/' . $url->image));
-                $url->image = 'meta/' . $url->image;
-                $url->save();
-
+            if (!preg_match('/^meta\//', $url->image) and $url->image) {
+                $filePath = public_path('images/og/' . $url->image);
+                if (file_exists($filePath)) {
+                    $url->image = 'meta/' . $url->image;
+                    $url->save();
+                    rename(public_path($filePath), storage_path('app/public/' . $url->image));
+                }
             } else if (preg_match('/^meta\//', $url->image)) {
-                rename(storage_path('app/' . $url->image), storage_path('app/public/' . $url->image));
+                $filePath = storage_path('app/' . $url->image);
+                if (file_exists($filePath)) {
+                    rename($filePath, storage_path('app/public/' . $url->image));
+                }
 
             }
         }
+
     }
 
     /**
