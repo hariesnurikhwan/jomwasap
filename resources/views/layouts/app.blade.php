@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="{{ config('app.locale') }}">
 <head>
     <meta charset="utf-8">
@@ -30,59 +29,104 @@
 
 </head>
 <body>
-
     <div id="app">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand ml-3" href="{{ url('/') }}">
-              {{ config('app.name', 'Laravel' )}}
-          </a>
-
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                @if (Auth::guest())
-                <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-                @else
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::path() == 'generate' ? 'active' : '' }}" href="{{ route('generate.index') }}">My Links</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown">
-                        {{ Auth::user()->name }} <span class="caret"></span>
-                    </a>
-                    <div class="dropdown-menu nav-dropdown" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                        onclick="event.preventDefault()
-                        document.getElementById('logout-form').submit()"
-                        >Logout</a>
+        <div id="wrapper">
+            <div id="nav-wrapper">
+                <nav id="sidebar-wrapper" role="navigation">
+                    <ul class="nav sidebar-nav">
+                        <li class="sidebar-brand">
+                            <a href="#">JOM Wasap</a>
+                        </li>
+                        @if(Auth::guest())
+                        <li>
+                            <a href="/login">Login</a>
+                        </li>
+                        <li>
+                           <a href="/register">Register</a>
+                       </li>
+                       @else
+                       <li>
+                        <a href="/dashboard">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="/generate">Generate</a>
+                    </li>
+                    <li>
+                        <a href="#">Marketing Campaign</a>
+                    </li>
+                    <li>
+                        <a v-on:click.prevent="logout" href="{{ route('logout') }}">Logout</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             {{csrf_field()}}
                         </form>
-                    </div>
-                </li>
-                @endif
-            </ul>
+                    </li>
+                    @endif
+                </ul>
+            </nav>
+            <button v-on:click.prevent="hamburger_cross()" type="button" class="hamburger is-closed">
+                <span class="hamb-top"></span>
+                <span class="hamb-middle"></span>
+                <span class="hamb-bottom"></span>
+            </button>
         </div>
-    </nav>
-    <br>
-</div>
-@yield('content')
-
-<footer class="footer mt-2 fixed-bottom bg-light">
-    <div class="container-fluid p-0">
-        <div class="bg-light p-3">
-            <p class="navbar-text float-right">
-                Developed By <a href="https://fb.me/hariesnurikhwan" target="_blank" >Haries Nur Ikhwan</a>
-            </p>
+        <div id="page-content-wrapper">
+            @yield('content')
         </div>
     </div>
-</footer>
-@include('partials.googleAnalytics')
-<script src="{{ mix('js/app.js') }}"></script>
-@stack('scripts')
+</div>
+
+@push('scripts')
+<script>
+    new Vue({
+        el: '#nav-wrapper',
+        data: {
+            isClosed: false,
+        },
+        methods: {
+
+            logout: function() {
+                $('#logout-form').submit();
+            },
+            hamburger_cross: function() {
+                trigger = $('.hamburger');
+                overlay = $('.overlay');
+                wrapper = $('#wrapper');
+
+                if (this.isClosed) {
+                    overlay.hide();
+                    trigger.removeClass('is-open');
+                    trigger.addClass('is-closed');
+                    this.isClosed = false;
+                } else {
+                    overlay.show();
+                    trigger.removeClass('is-closed');
+                    trigger.addClass('is-open');
+                    this.isClosed = true;
+                }
+
+                $('#wrapper').toggleClass('toggled');
+            }
+        },
+        mounted: function() {
+
+        }
+    })
+</script>
+@endpush
+
+
+
+    {{-- <footer class="footer mt-2 fixed-bottom bg-light">
+        <div class="container-fluid p-0">
+            <div class="bg-light p-3">
+                <p class="navbar-text float-right">
+                    Developed By <a href="https://fb.me/hariesnurikhwan" target="_blank" >Haries Nur Ikhwan</a>
+                </p>
+            </div>
+        </div>
+    </footer> --}}
+    @include('partials.googleAnalytics')
+    <script src="{{ mix('js/app.js') }}"></script>
+    @stack('scripts')
 </body>
 </html>

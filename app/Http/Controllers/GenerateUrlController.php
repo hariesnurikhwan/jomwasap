@@ -18,7 +18,6 @@ class GenerateUrlController extends Controller
             'show',
             'edit',
             'update',
-            'destroy',
         ]);
     }
 
@@ -27,15 +26,10 @@ class GenerateUrlController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-
-        if ($request->query('delete') !== null) {
-            $urls = ShortenedUrl::onlyTrashed()->where('user_id', Auth::id())->paginate(20);
-        } else {
-            $urls = ShortenedUrl::where('user_id', Auth::id())
-                ->paginate(20);
-        }
+        $urls = ShortenedUrl::where('user_id', Auth::id())
+            ->paginate(20);
 
         return view('generate.index', [
             'urls' => $urls,
@@ -74,7 +68,6 @@ class GenerateUrlController extends Controller
                 'regex:/^[a-zA-Z0-9_-]*$/',
             ],
             'text'                => 'nullable|max:5000',
-            'info'                => 'nullable|max:255',
             'mobile_number'       => [
                 'required_if:type,single',
                 'nullable',
@@ -90,60 +83,38 @@ class GenerateUrlController extends Controller
                 'boolean',
                 'required',
             ],
-            'title'               => 'required_with:description,image|max:255',
-            'description'         => 'required_with:title,image|max:255',
+            'title'               => 'required_with:description|max:255',
+            'description'         => 'required_with:title|max:255',
             'image'               => 'required_with:title,description|image',
         ]);
 
         $url = DB::transaction(function () use ($request) {
-            if (isset($request->image)) {
+            if ($request->hasFile('image')) {
                 $pathName = $request->image->store('meta');
             }
 
-            if ($request->type === 'single') {
-                if (isset($request->title)) {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'mobile_number'       => $request->mobile_number,
-                        'text'                => $request->text,
-                        'info'                => $request->info,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'title'               => $request->title,
-                        'description'         => $request->description,
-                        'image'               => $pathName,
-                    ]));
-                } else {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'mobile_number'       => $request->mobile_number,
-                        'text'                => $request->text,
-                        'info'                => $request->info,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                    ]));
-                }
-            } elseif ($request->type === 'group') {
-                if (isset($request->title)) {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'text'                => $request->text,
-                        'info'                => $request->info,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'title'               => $request->title,
-                        'description'         => $request->description,
-                        'image'               => $pathName,
-                    ]));
-                } else {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'text'                => $request->text,
-                        'info'                => $request->info,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                    ]));
-                }
+            $newUrl = [
+                'alias'               => $request->alias,
+                'text'                => $request->text,
+                'type'                => $request->type,
+                'enable_lead_capture' => $request->enable_lead_capture,
+            ];
+
+            if ($request->has('title')) {
+                $newUrl = array_merge($newUrl, [
+                    'title'       => $request->title,
+                    'description' => $request->description,
+                    'image'       => $pathName,
+                ]);
+            }
+
+            if ($request->has('mobile_number')) {
+                $newUrl = array_merge($newUrl, ['mobile_number' => $request->mobile_number]);
+            }
+
+            $url = Auth::user()->addUrl(new ShortenedUrl($newUrl));
+
+            if ($request->type === 'group') {
                 foreach ($request->mobile_numbers as $number) {
                     $url->group()->create([
                         'mobile_number' => $number,
@@ -153,6 +124,7 @@ class GenerateUrlController extends Controller
 
             return $url;
         });
+
         return redirect()->route('generate.show', $url->hashid);
 
     }
@@ -206,7 +178,6 @@ class GenerateUrlController extends Controller
                 'max:255',
             ],
             'text'                => 'nullable|max:5000',
-            'info'                => 'nullable|max:255',
             'mobile_number'       => [
                 'required_if:type,single',
                 'phone:MY',
@@ -231,13 +202,12 @@ class GenerateUrlController extends Controller
         $url = DB::transaction(function () use ($request, $url) {
 
             if ($request->hasFile('image')) {
-                $pathName = $request->image->store('meta');
+                $pathName = $request->image->store('meta', 'public');
             }
 
             $editUrl = [
                 'alias'               => $request->alias,
                 'text'                => $request->text,
-                'info'                => $request->info,
                 'type'                => $request->type,
                 'enable_lead_capture' => $request->enable_lead_capture,
             ];
@@ -279,11 +249,4 @@ class GenerateUrlController extends Controller
 
         return redirect()->route('generate.show', $url->hashid);
     }
-
-    public function destroy(ShortenedUrl $url)
-    {
-        $url->delete();
-        return redirect()->route('generate.index');
-    }
-
 }

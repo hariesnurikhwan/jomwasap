@@ -59,5 +59,6 @@ class Kernel extends HttpKernel
         'throttle'             => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'URLMustBelongToOwner' => \App\Http\Middleware\GeneratedResourceOnlyForResourceOwner::class,
         'CheckLeadCapture'     => \App\Http\Middleware\CheckLeadCapture::class,
+        'UrlHits'              => \App\Http\Middleware\UrlHits::class,
     ];
 }

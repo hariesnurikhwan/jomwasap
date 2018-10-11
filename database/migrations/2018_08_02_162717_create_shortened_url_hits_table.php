@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLeadsTable extends Migration
+class CreateShortenedUrlHitsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateLeadsTable extends Migration
      */
     public function up()
     {
-        Schema::create('leads', function (Blueprint $table) {
+        Schema::create('shortened_url_hits', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('shortened_url_id')->unsinged();
-            $table->string('name');
-            $table->string('mobile_number');
+            $table->string('user_agent')->nullable();
+            $table->string('ip_address')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateLeadsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('leads');
+        Schema::dropIfExists('shortened_url_hits');
     }
 }

@@ -21,9 +21,10 @@ Route::resource('generate', 'GenerateUrlController', ['parameters' => ['generate
 Route::get('/generate/{hashid}/restore', 'RestoreUrlController@restore', ['middleware' => 'auth'])->name('generate.restore');
 
 Route::group(['domain' => 'hi.jomwasap.my'], function () {
-    Route::get('{alias}', 'VisitUrlController@go')->middleware('CheckLeadCapture');
+    Route::get('{alias}', 'VisitUrlController@go')->middleware(['CheckLeadCapture', 'UrlHits']);
 });
 
-Route::get('/go/{alias}', 'VisitUrlController@go')->middleware('CheckLeadCapture');
+Route::get('/go/{alias}', 'VisitUrlController@go')->middleware(['CheckLeadCapture', 'UrlHits']);
 
 Route::post('/lead', 'LeadController@store')->name('lead');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
