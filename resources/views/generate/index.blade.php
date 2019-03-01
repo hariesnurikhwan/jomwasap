@@ -21,80 +21,82 @@
 
                     </div>
                     <div class="card-body">
-                        <table class="table table-borderless table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">
-                                        #
-                                    </th>
-                                    <th scope="col">
-                                        URL
-                                    </th>
-                                    <th scope="col">
-                                        Info
-                                    </th>
-                                    <th scope="col">
-                                        Type
-                                    </th>
-                                    <th scope="col">
-                                        Mobile Number
-                                    </th>
-                                    <th scope="col">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            #
+                                        </th>
+                                        <th scope="col">
+                                            URL
+                                        </th>
+                                        <th scope="col">
+                                            Info
+                                        </th>
+                                        <th scope="col">
+                                            Type
+                                        </th>
+                                        <th scope="col">
+                                            Mobile Number
+                                        </th>
+                                        <th scope="col">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                                @foreach($urls as $url)
-                                <tr>
-                                    <th scope="row">
-                                        {{ $loop->iteration }}
-                                    </th>
-                                    <td>
-                                        <a href="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">{{ $url->alias }}</a>
-                                        <div class="float-right">
-                                            <button class="btn btn-secondary btn-sm" data-clipboard-text="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">
-                                                <span class="fa fa-clipboard"></span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {{ $url->info }}
-                                    </td>
-                                    <td>
-                                        {{ ucfirst($url->type) }}
-                                    </td>
-                                    @if($url->type === 'single')
-                                    <td>
-                                        {{ $url->mobile_number }}
-                                    </td>
-                                    @else
-                                    <td>
-                                        @foreach($url->group->pluck('mobile_number')->toArray() as $number)
-                                        {{ $number }}
-                                        <br>
-                                        @endforeach
-                                    </td>
-                                    @endif
-                                    <td>
-
-                                        <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-sm">Show</a>
-                                        <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-info btn-sm">Edit</a>
-                                        @if(Request::exists('delete'))
-                                        <a href="{{ route('generate.restore', $url->hashid) }}" class="btn btn-success btn-sm">Restore</a>
+                                    @foreach($urls as $url)
+                                    <tr>
+                                        <th scope="row">
+                                            {{ $loop->iteration }}
+                                        </th>
+                                        <td>
+                                            <a href="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">{{ $url->alias }}</a>
+                                            <div class="float-right">
+                                                <button class="btn btn-secondary btn-sm" data-clipboard-text="{{ url('https://hi.jomwasap.my/' . $url->alias) }}">
+                                                    <span class="fa fa-clipboard"></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ $url->info }}
+                                        </td>
+                                        <td>
+                                            {{ ucfirst($url->type) }}
+                                        </td>
+                                        @if($url->type === 'single')
+                                        <td>
+                                            {{ $url->mobile_number }}
+                                        </td>
                                         @else
-                                        <a href="{{ route('generate.destroy', $url->hashid) }}" onclick="event.preventDefault(); document.getElementById('delete_form_{{$loop->iteration}}').submit() " class="btn btn-danger btn-sm">Delete</a>
-                                        <form id="delete_form_{{$loop->iteration}}" style="display: none;" action="{{ route('generate.destroy', $url->hashid) }}" method="post">
-                                            <input type="hidden" name="_method" value="delete">
-                                            {{csrf_field()}}
-                                        </form>
+                                        <td>
+                                            @foreach($url->group->pluck('mobile_number')->toArray() as $number)
+                                            {{ $number }}
+                                            <br>
+                                            @endforeach
+                                        </td>
                                         @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        <td>
+
+                                            <a href="{{ route('generate.show', $url->hashid) }}" class="btn btn-primary btn-sm">Show</a>
+                                            <a href="{{ route('generate.edit', $url->hashid) }}" class="btn btn-info btn-sm">Edit</a>
+                                            @if(Request::exists('delete'))
+                                            <a href="{{ route('generate.restore', $url->hashid) }}" class="btn btn-success btn-sm">Restore</a>
+                                            @else
+                                            <a href="{{ route('generate.destroy', $url->hashid) }}" onclick="event.preventDefault(); document.getElementById('delete_form_{{$loop->iteration}}').submit() " class="btn btn-danger btn-sm">Delete</a>
+                                            <form id="delete_form_{{$loop->iteration}}" style="display: none;" action="{{ route('generate.destroy', $url->hashid) }}" method="post">
+                                                <input type="hidden" name="_method" value="delete">
+                                                {{csrf_field()}}
+                                            </form>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         {{ $urls->links() }}
                     </div>
                 </div>
