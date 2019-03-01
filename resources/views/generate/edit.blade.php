@@ -205,6 +205,9 @@
 							<input class="form-control" type="file" name="image">
 							<small class="text-danger">{{$errors->first('image')}}</small>
 						</div>
+						@if($url->image)
+							<img  class="img-fluid rounded mx-auto d-block" src="{{ asset('storage/' . $url->image) }}" >
+						@endif
 					</div>
 					<div id="fbpixelTab" class="tab-pane fade" role="tabpanel">
 						<br>

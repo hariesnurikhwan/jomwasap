@@ -93,63 +93,38 @@ class GenerateUrlController extends Controller
             'title'               => 'required_with:description,image|max:255',
             'description'         => 'required_with:title,image|max:255',
             'image'               => 'required_with:title,description|image',
-            'facebook_pixel'      => 'required|nullable|string|between:5,20',
+            'facebook_pixel'      => 'nullable|string|between:5,20',
         ]);
 
         $url = DB::transaction(function () use ($request) {
-            if (isset($request->image)) {
-                $pathName = $request->image->store('meta', 'public');
-
-            }
+            $data = [
+                'alias'               => $request->alias,
+                'text'                => $request->text,
+                'info'                => $request->info,
+                'type'                => $request->type,
+                'enable_lead_capture' => $request->enable_lead_capture,
+                'facebook_pixel'      => $request->facebook_pixel,
+            ];
 
             if ($request->type === 'single') {
-                if (isset($request->title)) {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'mobile_number'       => $request->mobile_number,
-                        'text'                => $request->text,
-                        'info'                => $request->info,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'title'               => $request->title,
-                        'description'         => $request->description,
-                        'image'               => $pathName,
-                        'facebook_pixel'      => $request->facebook_pixel,
-                    ]));
-                } else {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'mobile_number'       => $request->mobile_number,
-                        'text'                => $request->text,
-                        'info'                => $request->info,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'facebook_pixel'      => $request->facebook_pixel,
-                    ]));
-                }
-            } elseif ($request->type === 'group') {
-                if (isset($request->title)) {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'text'                => $request->text,
-                        'info'                => $request->info,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'title'               => $request->title,
-                        'description'         => $request->description,
-                        'image'               => $pathName,
-                        'facebook_pixel'      => $request->facebook_pixel,
-                    ]));
-                } else {
-                    $url = Auth::user()->addUrl(new ShortenedUrl([
-                        'alias'               => $request->alias,
-                        'text'                => $request->text,
-                        'info'                => $request->info,
-                        'type'                => $request->type,
-                        'enable_lead_capture' => $request->enable_lead_capture,
-                        'facebook_pixel'      => $request->facebook_pixel,
-                    ]));
-                }
+                $data = array_merge($data, [
+                    'mobile_number' => $request->mobile_number,
+                ]);
+            }
+
+            if ($request->has('title')) {
+                $pathName = $request->image->store('meta', 'public');
+
+                $data = array_merge($data, [
+                    'title'       => $request->title,
+                    'description' => $request->description,
+                    'image'       => $pathName,
+                ]);
+            }
+
+            $url = Auth::user()->addUrl(new ShortenedUrl($data));
+
+            if ($request->type === 'group') {
                 foreach ($request->mobile_numbers as $number) {
                     $url->group()->create([
                         'mobile_number' => $number,
@@ -159,8 +134,8 @@ class GenerateUrlController extends Controller
 
             return $url;
         });
-        return redirect()->route('generate.show', $url->hashid);
 
+        return redirect()->route('generate.show', $url->hashid);
     }
 
     /**
@@ -232,16 +207,11 @@ class GenerateUrlController extends Controller
             'title'               => 'required_with:description|max:255',
             'description'         => 'required_with:title|max:255',
             'image'               => 'nullable|image',
-            'facebook_pixel'      => 'required|nullable|string|between:5,20',
+            'facebook_pixel'      => 'nullable|string|between:5,20',
         ]);
 
-        $url = DB::transaction(function () use ($request, $url) {
-
-            if ($request->hasFile('image')) {
-                $pathName = $request->image->store('meta', 'public');
-            }
-
-            $editUrl = [
+        DB::transaction(function () use ($request, $url) {
+            $data = [
                 'alias'               => $request->alias,
                 'text'                => $request->text,
                 'info'                => $request->info,
@@ -251,26 +221,27 @@ class GenerateUrlController extends Controller
             ];
 
             if ($request->has('title')) {
-                $editUrl = array_merge($editUrl, [
+                if ($request->hasFile('image')) {
+                    $pathName = $request->image->store('meta', 'public');
+                }
+
+                $data = array_merge($data, [
                     'title'       => $request->title,
                     'description' => $request->description,
                     'image'       => $pathName ?? $url->image,
                 ]);
             }
 
-            if ($request->has('mobile_number')) {
-                $editUrl = array_merge($editUrl, ['mobile_number' => $request->mobile_number]);
+            if ($url->type === 'single') {
+                $data = array_merge($data, ['mobile_number' => $request->mobile_number]);
             }
 
-            $url->update($editUrl);
+            $url->update($data);
 
             if ($url->type === 'group') {
-
                 $existingNumber = $url->group()->pluck('mobile_number')->toArray();
-
                 $mobile_numbers = $request->mobile_numbers;
-
-                $editedNumbers = array_diff($existingNumber, $mobile_numbers);
+                $editedNumbers  = array_diff($existingNumber, $mobile_numbers);
 
                 foreach ($mobile_numbers as $number) {
                     $url->group()->firstOrCreate(['mobile_number' => $number]);
@@ -280,9 +251,6 @@ class GenerateUrlController extends Controller
                     $url->group()->where('mobile_number', $number)->delete();
                 }
             }
-
-            return $url;
-
         });
 
         return redirect()->route('generate.show', $url->hashid);
