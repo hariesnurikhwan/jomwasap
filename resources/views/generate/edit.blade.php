@@ -189,7 +189,7 @@
 					<div role="tabpanel" class="tab-pane" id="fbmetaTab">
 						<div class="form-group">
 							<label for="title">Title</label>
-							<input class="form-control" type="text" name="title" value={{old('title') ? old('title') : $url->title}}>
+							<input class="form-control" type="text" name="title" value="{{ old('title') ? old('title') : $url->title }}">
 							<small class="text-danger">{{$errors->first('title')}}</small>
 						</div>
 						<div class="form-group">

@@ -97,7 +97,8 @@ class GenerateUrlController extends Controller
 
         $url = DB::transaction(function () use ($request) {
             if (isset($request->image)) {
-                $pathName = $request->image->store('meta');
+                $pathName = $request->image->store('meta', 'public');
+
             }
 
             if ($request->type === 'single') {
@@ -231,7 +232,7 @@ class GenerateUrlController extends Controller
         $url = DB::transaction(function () use ($request, $url) {
 
             if ($request->hasFile('image')) {
-                $pathName = $request->image->store('meta');
+                $pathName = $request->image->store('meta', 'public');
             }
 
             $editUrl = [
