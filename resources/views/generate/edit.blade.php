@@ -114,6 +114,9 @@
 					<li class="nav-item">
 						<a v-on:click="active" href="#fbmetaTab" class="nav-link" id="fbmetaNav" data-toggle="tab" role="tab">Facebook Meta</a>
 					</li>
+					<li class="nav-item">
+						<a v-on:click="active" href="#fbpixelTab" class="nav-link" id="fbpixelNav" data-toggle="tab" role="tab">Facebook Pixel</a>
+					</li>
 				</ul>
 
 				<div class="tab-content">
@@ -201,6 +204,14 @@
 							<label for="image">Image</label>
 							<input class="form-control" type="file" name="image">
 							<small class="text-danger">{{$errors->first('image')}}</small>
+						</div>
+					</div>
+					<div id="fbpixelTab" class="tab-pane fade" role="tabpanel">
+						<br>
+						<div class="form-group">
+							<label for="title">Pixel ID</label>
+							<input class="form-control" type="text" name="facebook_pixel" value={{old('facebook_pixel', $url->facebook_pixel)}}>
+							<small class="text-danger">{{$errors->first('facebook_pixel')}}</small>
 						</div>
 					</div>
 				</div>

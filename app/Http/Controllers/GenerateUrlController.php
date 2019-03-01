@@ -93,6 +93,7 @@ class GenerateUrlController extends Controller
             'title'               => 'required_with:description,image|max:255',
             'description'         => 'required_with:title,image|max:255',
             'image'               => 'required_with:title,description|image',
+            'facebook_pixel'      => 'required|nullable|string|between:5,20',
         ]);
 
         $url = DB::transaction(function () use ($request) {
@@ -113,6 +114,7 @@ class GenerateUrlController extends Controller
                         'title'               => $request->title,
                         'description'         => $request->description,
                         'image'               => $pathName,
+                        'facebook_pixel'      => $request->facebook_pixel,
                     ]));
                 } else {
                     $url = Auth::user()->addUrl(new ShortenedUrl([
@@ -122,6 +124,7 @@ class GenerateUrlController extends Controller
                         'info'                => $request->info,
                         'type'                => $request->type,
                         'enable_lead_capture' => $request->enable_lead_capture,
+                        'facebook_pixel'      => $request->facebook_pixel,
                     ]));
                 }
             } elseif ($request->type === 'group') {
@@ -135,6 +138,7 @@ class GenerateUrlController extends Controller
                         'title'               => $request->title,
                         'description'         => $request->description,
                         'image'               => $pathName,
+                        'facebook_pixel'      => $request->facebook_pixel,
                     ]));
                 } else {
                     $url = Auth::user()->addUrl(new ShortenedUrl([
@@ -143,6 +147,7 @@ class GenerateUrlController extends Controller
                         'info'                => $request->info,
                         'type'                => $request->type,
                         'enable_lead_capture' => $request->enable_lead_capture,
+                        'facebook_pixel'      => $request->facebook_pixel,
                     ]));
                 }
                 foreach ($request->mobile_numbers as $number) {
@@ -227,6 +232,7 @@ class GenerateUrlController extends Controller
             'title'               => 'required_with:description|max:255',
             'description'         => 'required_with:title|max:255',
             'image'               => 'nullable|image',
+            'facebook_pixel'      => 'required|nullable|string|between:5,20',
         ]);
 
         $url = DB::transaction(function () use ($request, $url) {
@@ -241,6 +247,7 @@ class GenerateUrlController extends Controller
                 'info'                => $request->info,
                 'type'                => $request->type,
                 'enable_lead_capture' => $request->enable_lead_capture,
+                'facebook_pixel'      => $request->facebook_pixel,
             ];
 
             if ($request->has('title')) {

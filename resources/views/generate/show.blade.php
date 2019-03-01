@@ -53,6 +53,8 @@
                                 </button>
                             </div>
                         </dd>
+                        <dt class="col-3">Facebook Pixel</dt>
+                        <dd class="col-9"> {{ $url->facebook_pixel ?? 'N/A' }} </dd>
                         @if ($url->type === 'single')
                         <dt class="col-3">Mobile Number</dt>
                         <dd class="col-9"> {{ phone($url->mobile_number, 'MY') }} </dd>

@@ -17,15 +17,13 @@
 
 
     @isset($url)
-    @include('partials.customFacebookMeta')
+        @include('partials.customFacebookMeta')
     @else
-    @include('partials.facebookMeta')
+        @include('partials.facebookMeta')
     @endisset
 
-    <!-- Scripts -->
-
     <script>
-        window.Laravel = {!!json_encode(['csrfToken' => csrf_token(),]) !!};
+        window.Laravel = {!!json_encode(['csrfToken' => csrf_token()]) !!};
     </script>
 
 </head>
@@ -81,8 +79,12 @@
         </div>
     </div>
 </footer>
+@isset($url->facebook_pixel)
+    @include('partials.facebookPixel')
+@endisset
 @include('partials.googleAnalytics')
 <script src="{{ mix('js/app.js') }}"></script>
 @stack('scripts')
+
 </body>
 </html>
