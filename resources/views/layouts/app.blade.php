@@ -32,7 +32,7 @@
     <div id="app">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand ml-3" href="{{ url('/') }}">
-              {{ config('app.name', 'Laravel' )}}
+            <img height="50" src="{{ asset('images/logo.png') }}" alt="JOMWasap">
           </a>
 
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler">
