@@ -80,9 +80,7 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    JOM Wasap
-                </div>
+                <img src="{{ asset('images/logo.png') }}" alt="JOMWasap">
                 <h4>
                     WhatsApp Click to Chat. Try <a href="https://hi.jomwasap.my/demo" class="btn btn-success btn-xs">Click Me</a>
                 </h4>
