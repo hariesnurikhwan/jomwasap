@@ -194,7 +194,7 @@ class GenerateUrlController extends Controller
             ],
             'mobile_numbers'      => [
                 'required_if:type,group',
-                'between:2,5',
+                'between:1,5',
             ],
             'mobile_numbers.*'    => [
                 'distinct',
