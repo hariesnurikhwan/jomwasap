@@ -63,7 +63,7 @@
 					$('#addField').prop('disabled', false);
 				}
 
-				if (this.inputs.length < 2) {
+				if (this.inputs.length < 1) {
 					$('#submit').prop('disabled', true);
 				}
 
@@ -86,7 +86,6 @@
 			this.inputs.push(mobile_number);
 			@endfor
 			@else
-			this.inputs.push({number: '', error: ''})
 			this.inputs.push({number: '', error: ''})
 			@endif
 

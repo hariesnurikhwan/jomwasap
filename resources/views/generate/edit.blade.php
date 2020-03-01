@@ -57,7 +57,7 @@
 						$('#addField').prop('disabled', false);
 					}
 
-					if (this.inputs.length < 2) {
+					if (this.inputs.length < 1) {
 						$('#submit').prop('disabled', true);
 					}
 
@@ -220,7 +220,7 @@
 				</div>
 				<div class="btn-group pull-right">
 					<input type="reset" value="Reset" class="btn btn-warning">
-					<input id="submit" type="submit" value="Generate" class="btn btn-success">
+					<input id="submit" type="submit" value="Save" class="btn btn-success">
 				</div>
 			</form>
 		</div>
