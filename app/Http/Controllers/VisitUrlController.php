@@ -18,7 +18,17 @@ class VisitUrlController extends Controller
         if ($url->type === 'single') {
             $mobileNumber = phone($url->mobile_number, 'MY', PhoneNumberFormat::E164);
         } elseif ($url->type === 'group') {
-            $mobileNumber = $url->group()->inRandomOrder()->first();
+            $mobileNumbers = $url->group()->get(['mobile_number', 'id']);
+            if ($mobileNumbers->count() >= 2) {
+                $mobileNumber = $mobileNumbers->first(function ($mobileNumber) use ($url, $mobileNumbers) {
+                    return $mobileNumber->id > $url->group_id || $url->group_id == $mobileNumbers->keyBy('id')->last()->id;
+                });
+                $url->update([
+                    'group_id' => $mobileNumber->id,
+                ]);
+            } else {
+                $mobileNumber = $mobileNumbers->first();
+            }
             $mobileNumber = phone($mobileNumber->mobile_number, 'MY', PhoneNumberFormat::E164);
         }
 
