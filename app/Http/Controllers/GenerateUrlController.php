@@ -83,7 +83,7 @@ class GenerateUrlController extends Controller
             'mobile_numbers'      => [
                 'required_if:type,group',
                 'nullable',
-                'between:1,5',
+                'between:1,15',
             ],
             'mobile_numbers.*'    => 'distinct|phone:MY',
             'enable_lead_capture' => [
@@ -194,7 +194,7 @@ class GenerateUrlController extends Controller
             ],
             'mobile_numbers'      => [
                 'required_if:type,group',
-                'between:1,5',
+                'between:1,15',
             ],
             'mobile_numbers.*'    => [
                 'distinct',

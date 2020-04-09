@@ -49,11 +49,11 @@
 		updated: function() {
 			this.$nextTick(function() {
 				if (this.type === 'group') {
-					if (this.inputs.length >= 5) {
+					if (this.inputs.length >= 15) {
 						$('#addField').prop('disabled', true);
 					}
 
-					if (this.inputs.length < 5) {
+					if (this.inputs.length < 15) {
 						$('#addField').prop('disabled', false);
 					}
 
