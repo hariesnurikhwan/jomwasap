@@ -22,7 +22,9 @@
 			},
 
 			removeField: function(index) {
-				this.inputs.splice(index, 1);
+				if (this.inputs.length > 1) {
+					this.inputs.splice(index, 1);
+				}
 			},
 
 			active: function(){
@@ -163,7 +165,7 @@
 									<div v-for="(input, index) in inputs">
 										<div class="form-group">
 											<div class="input-group">
-												<input name="mobile_numbers[]" :value="input.number" required class="form-control">
+												<input name="mobile_numbers[]" :value="input.number" v-model="inputs[index].number" required class="form-control">
 												<div class="input-group-btn">
 													<button class="btn btn-danger" v-on:click.prevent="removeField(index)">
 														<span class="fa fa-times"></span>
