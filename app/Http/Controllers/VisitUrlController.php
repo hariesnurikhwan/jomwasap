@@ -22,7 +22,8 @@ class VisitUrlController extends Controller
             if ($mobileNumbers->count() >= 2) {
                 $mobileNumber = $mobileNumbers->first(function ($mobileNumber) use ($url, $mobileNumbers) {
                     return $mobileNumber->id > $url->group_id || $url->group_id == $mobileNumbers->keyBy('id')->last()->id;
-                });
+                }, $mobileNumbers->first());
+
                 $url->update([
                     'group_id' => $mobileNumber->id,
                 ]);
