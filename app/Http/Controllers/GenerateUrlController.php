@@ -72,6 +72,7 @@ class GenerateUrlController extends Controller
                 'nullable',
                 Rule::unique('shortened_urls'),
                 'regex:/^[a-zA-Z0-9_-]*$/',
+                'max:255',
             ],
             'text'                => 'nullable|max:5000',
             'info'                => 'nullable|max:255',
