@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use libphonenumber\PhoneNumberFormat;
 use Vinkla\Hashids\Facades\Hashids;
 
 class ShortenedUrl extends Model
@@ -24,6 +25,11 @@ class ShortenedUrl extends Model
     public function getHashidAttribute($value)
     {
         return Hashids::encode($this->id);
+    }
+
+    public function setMobileNumberAttribute($value)
+    {
+        $this->attributes['mobile_number'] = phone($value, 'MY', PhoneNumberFormat::E164);
     }
 
     public function group()
