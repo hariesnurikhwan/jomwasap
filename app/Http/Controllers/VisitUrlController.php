@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\ShortenedUrl;
 use Jenssegers\Agent\Agent;
-use libphonenumber\PhoneNumberFormat;
 
 class VisitUrlController extends Controller
 {
@@ -16,7 +15,8 @@ class VisitUrlController extends Controller
         $text = rawurlencode($url->text);
 
         if ($url->type === 'single') {
-            $mobileNumber = phone($url->mobile_number, 'MY', PhoneNumberFormat::E164);
+            // $mobileNumber = phone($url->mobile_number, 'MY', PhoneNumberFormat::E164);
+            $mobileNumber = $url->mobile_number;
         } elseif ($url->type === 'group') {
             $mobileNumbers = $url->group()->get(['mobile_number', 'id']);
             if ($mobileNumbers->count() >= 2) {
@@ -30,7 +30,7 @@ class VisitUrlController extends Controller
             } else {
                 $mobileNumber = $mobileNumbers->first();
             }
-            $mobileNumber = phone($mobileNumber->mobile_number, 'MY', PhoneNumberFormat::E164);
+            $mobileNumber = $mobileNumber->mobile_number;
         }
 
         $redirectApp = "whatsapp://send?text={$text}&phone={$mobileNumber}";
