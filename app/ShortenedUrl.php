@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use libphonenumber\PhoneNumberFormat;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -29,7 +30,7 @@ class ShortenedUrl extends Model
 
     public function setMobileNumberAttribute($value)
     {
-        $this->attributes['mobile_number'] = phone($value, 'MY', PhoneNumberFormat::E164);
+        $this->attributes['mobile_number'] = Str::replaceFirst('+', '', phone($value, 'MY', PhoneNumberFormat::E164));
     }
 
     public function group()
