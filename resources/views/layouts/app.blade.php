@@ -26,6 +26,7 @@
         window.Laravel = {!!json_encode(['csrfToken' => csrf_token()]) !!};
     </script>
 
+    <script data-ad-client="ca-pub-9302574947880224" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
 

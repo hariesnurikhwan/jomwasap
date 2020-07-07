@@ -20,16 +20,5 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-9302574947880224"
-        data-ad-slot="2478351390"
-        data-ad-format="auto"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
 </div>
 @endsection
