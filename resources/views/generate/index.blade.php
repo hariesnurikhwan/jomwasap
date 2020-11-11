@@ -35,11 +35,11 @@
                     </div>
                     <div class="tab-pane fade" id="alert-malay" role="tabpanel" aria-labelledby="pills-profile-tab">
                         <p class="mb-1">Hi {{ auth()->user()->name }},</p>
-                        <p class="mb-2">Sejak 2017, saya telah melancarkan JOMWasap secara percuma untuk membantu memajukan bisnes untuk usahawan online tetapi fitur-fitur yang ditawarkan hanyalah asas sahaja dan mungkin banyak fitur yang anda inginkan tetapi tidak ditawarkan.</p>
-                        <p class="mb-2">Sekarang saya telah memutuskan untuk memberikan masa dan tenaga saya untuk membangunkan JOMWasap yang baharu dengan fitur-fitur yang lebih baik supaya dapat membantu anda menaikkan sale, menjimatkan masa serta memudahkan prospek menghubungi anda.</p>
-                        <p>Saya bercadang untuk menambah fitur-fitur baharu yang khas untuk pengguna yang melanggan JOMWasap dan jangan risau, akan ada juga fitur-fitur baharu secara percuma.</p>
+                        <p class="mb-2">Sejak 2017, saya telah melancarkan JOMWasap secara percuma untuk membantu memajukan bisnes untuk usahawan online tetapi ciri-ciri yang ditawarkan hanyalah asas sahaja dan mungkin banyak ciri yang anda inginkan tetapi tidak ditawarkan.</p>
+                        <p class="mb-2">Sekarang saya telah memutuskan untuk memberikan masa dan tenaga saya untuk membangunkan JOMWasap yang baharu dengan ciri-ciri yang lebih baik supaya dapat membantu anda menaikkan sale, menjimatkan masa serta memudahkan prospek menghubungi anda.</p>
+                        <p>Saya bercadang untuk menambah ciri-ciri baharu yang khas untuk pengguna yang melanggan JOMWasap dan jangan risau, akan ada juga ciri-ciri baharu secara percuma.</p>
                         <hr>
-                        <p class="mb-1">Sila sertai survey ini sekiranya anda berminat untuk mendapatkan akses fitur-fitur premium secara percuma selama 1 bulan.</p>
+                        <p class="mb-1">Sila sertai survey ini sekiranya anda berminat untuk mendapatkan akses ciri-ciri premium secara percuma selama 1 bulan.</p>
                         <p class="mb-1">Sekiranya anda berminat, sila lawati link ini dan jawab soalan survey <a href="https://forms.gle/CrfX2uBfA5MMam5r7">JOMWasap Survey</a>.</p>
                         <p class="mb-1">Anda juga boleh sertai group support Telegram untuk mendapatkan bantuan atau ingin memberikan sebarang idea, <a href="https://t.me/jomwasapmy">JOMWasap Support Group</a>.</p>
                     </div>
