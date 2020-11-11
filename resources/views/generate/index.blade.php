@@ -4,6 +4,47 @@
 <div class="container">
     <div class="row justify-content-md-center">
         <div class="col-md-10">
+            <div class="alert alert-dark" role="alert">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="alert-heading">Bulding JOMWasap to the next level!</h4>
+                    </div>
+                    <div class="col-auto">
+                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="alert-english-tab" data-toggle="pill" href="#alert-english" role="tab" aria-controls="alert-english" aria-selected="true">English</a>
+                                </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="alert-malay-tab" data-toggle="pill" href="#alert-malay" role="tab" aria-controls="alert-malay" aria-selected="false">Melayu</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="alert-english" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <p class="mb-1">Hi {{ auth()->user()->name }},</p>
+                        <p class="mb-2">Since 2017, I've running JOMWasap for free to help online seller boost their business but the features provided are only basic and maybe the that features you want aren't available.</p>
+                        <p class="mb-2">Now I've planned to spend my time and energy to develop new JOMWasap with tons of new and exicting features to help boost your sales, saves your time and make it easier for prospect to contact you.</p>
+                        <p>I'm planning to add tons of features that is exclusive to users that subscribed to JOMWasap but don't worry there'll be new features for free too.</p>
+                        <hr>
+                        <p class="mb-1">Please join this survey if you're interested to have access premium features for free for 1 month.</p>
+                        <p class="mb-1">If you're interested, please visit this link and answer the survey <a href="https://forms.gle/CrfX2uBfA5MMam5r7">JOMWasap Survey</a>.</p>
+                        <p class="mb-1">You may also join our Telegram support group to get help or request a new feature <a href="https://t.me/jomwasapmy">JOMWasap Support Group</a>.</p>
+                    </div>
+                    <div class="tab-pane fade" id="alert-malay" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <p class="mb-1">Hi {{ auth()->user()->name }},</p>
+                        <p class="mb-2">Sejak 2017, saya telah melancarkan JOMWasap secara percuma untuk membantu memajukan bisnes untuk usahawan online tetapi fitur-fitur yang ditawarkan hanyalah asas sahaja dan mungkin banyak fitur yang anda inginkan tetapi tidak ditawarkan.</p>
+                        <p class="mb-2">Sekarang saya telah memutuskan untuk memberikan masa dan tenaga saya untuk membangunkan JOMWasap yang baharu dengan fitur-fitur yang lebih baik supaya dapat membantu anda menaikkan sale, menjimatkan masa serta memudahkan prospek menghubungi anda.</p>
+                        <p>Saya bercadang untuk menambah fitur-fitur baharu yang khas untuk pengguna yang melanggan JOMWasap dan jangan risau, akan ada juga fitur-fitur baharu secara percuma.</p>
+                        <hr>
+                        <p class="mb-1">Sila sertai survey ini sekiranya anda berminat untuk mendapatkan akses fitur-fitur premium secara percuma selama 1 bulan.</p>
+                        <p class="mb-1">Sekiranya anda berminat, sila lawati link ini dan jawab soalan survey <a href="https://forms.gle/CrfX2uBfA5MMam5r7">JOMWasap Survey</a>.</p>
+                        <p class="mb-1">Anda juga boleh sertai group support Telegram untuk mendapatkan bantuan atau ingin memberikan sebarang idea, <a href="https://t.me/jomwasapmy">JOMWasap Support Group</a>.</p>
+                    </div>
+                </div>
+            </div>
             <div class="card">
                 <div class="card">
                     <div class="card-header">
